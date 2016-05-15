@@ -24,7 +24,7 @@
 - 执行 `npm install`
 - 配置 project.json，如下：
 
-```
+```json
 {
     "src": {
         "pages": "financing-frontend-mobile-develop",
@@ -41,18 +41,18 @@
 
 - 开发模式
 
-```
+```shell
 grunt dev
 ```
 
 - 打包模式
 
-```
+```shell
 grunt build
 ```
 
 ## 目录结构
-```
+```shell
 ├── financing-frontend-mobile-develop
 │   ├── images
 │   ├── pages
