@@ -52,7 +52,7 @@ grunt build
 ```
 
 ## 目录结构
-```shell
+```plain
 ├── financing-frontend-mobile-develop
 │   ├── images
 │   ├── pages
