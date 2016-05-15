@@ -18,9 +18,9 @@
 4. 为前后端分离打下基础
 
 ## 使用方法
-1. 从 [HCJ_Engine](http://gitlab.tools.vipshop.com/wange.zhu/hcj_engine/tree/master) 项目的仓库中获取最新代码，并放置于 financing 根目录下
-2. 执行 npm install
-3. 配置 project.json，如下：
+- 从 [HCJ_Engine](http://gitlab.tools.vipshop.com/wange.zhu/hcj_engine/tree/master) 项目的仓库中获取最新代码，并放置于 financing 根目录下
+- 执行 npm install
+- 配置 project.json，如下：
 
 ```
 {
@@ -37,13 +37,13 @@
 }
 ```
 
-4. 开发模式
+- 开发模式
 
 ```
 grunt dev
 ```
 
-5. 打包模式
+- 打包模式
 
 ```
 grunt build
