@@ -8,11 +8,21 @@ module.exports = function(grunt) {
             options: {
                 port: 80,
                 hostname: '127.0.0.1',
-                keepalive: true,
-                livereload: 35729
+                livereload: 35729,
             },
-            mobile: {
+            src: {
                 options: {
+                    base: [
+                        '<%= proj.build.pages %>',
+                        '<%= proj.build.static %>/mobile',
+                        './'
+                    ]
+                }
+            },
+            build: {
+                options: {
+                    keepalive: true,
+                    livereload: false,
                     base: [
                         '<%= proj.build.pages %>',
                         '<%= proj.build.static %>/mobile',
@@ -188,7 +198,7 @@ module.exports = function(grunt) {
         'less:dev',
         'uglify:dev',
         'copy:images',
-        'connect:mobile',
+        'connect:src',
         'watch'
     ]);
 
@@ -202,6 +212,6 @@ module.exports = function(grunt) {
         'filerev',
         'usemin',
         "clean:build",
-        'connect:mobile'
+        'connect:build'
     ]);
 };
