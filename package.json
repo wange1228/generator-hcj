@@ -6,6 +6,7 @@
     "name": "朱一成",
     "email": "wange.zhu@vipshop.com"
   },
+  "homepage": "http://gitlab.tools.vipshop.com/wange.zhu/hcj_engine/tree/master",
   "repository": {
     "type": "git",
     "url": "git@gitlab.tools.vipshop.com:wange.zhu/hcj_engine.git"
