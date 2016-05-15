@@ -8,7 +8,7 @@ module.exports = function(grunt) {
             options: {
                 port: 80,
                 hostname: '127.0.0.1',
-                livereload: 35729,
+                livereload: 35729
             },
             src: {
                 options: {
@@ -134,6 +134,12 @@ module.exports = function(grunt) {
                     cwd: '<%= proj.src.static %>/scripts/<%= proj.src.path %>',
                     src: ['**.js'],
                     dest: '<%= proj.build.static %>/mobile/scripts/<%= proj.build.path %>',
+                    ext: '.js'
+                },{
+                    expand: true,
+                    cwd: '<%= proj.src.static %>/scripts/lib',
+                    src: ['**/*.js'],
+                    dest: '<%= proj.build.static %>/mobile/scripts/lib',
                     ext: '.js'
                 }]
             },
