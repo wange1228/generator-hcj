@@ -1,13 +1,12 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
-    // require('time-grunt')(grunt);
 
     grunt.initConfig({
         // pkg: grunt.file.readJSON('package.json'),
         proj: grunt.file.readJSON('project.json'),
         connect: {
             options: {
-                port: 8000,
+                port: 80,
                 hostname: '127.0.0.1',
                 keepalive: true,
                 livereload: 35729
