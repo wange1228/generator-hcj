@@ -34,28 +34,28 @@ module.exports = function(grunt) {
 
         watch: {
             pages: {
-                files: ['<%= proj.src.pages %>/pages/<%= proj.build.path %>/**.html'],
-                tasks: ['clean:pages', 'htmlmin'],
+                files: ['<%= proj.src.pages %>/pages/<%= proj.src.path %>/**.html'],
+                tasks: ['clean:pages', 'includes'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
                 }
             },
             styles: {
-                files: ['<%= proj.src.static %>/styles/<%= proj.build.path %>/**.less'],
+                files: ['<%= proj.src.static %>/styles/<%= proj.src.path %>/**.less'],
                 tasks: ['clean:styles', 'less:dev'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
                 }
             },
             scripts: {
-                files: ['<%= proj.src.static %>/scripts/<%= proj.build.path %>/**.js'],
+                files: ['<%= proj.src.static %>/scripts/<%= proj.src.path %>/**.js'],
                 tasks: ['clean:scripts', 'uglify:dev'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
                 }
             },
             images: {
-                files: ['<%= proj.src.static %>/images/<%= proj.build.path %>/**.*'],
+                files: ['<%= proj.src.static %>/images/<%= proj.src.path %>/**.*'],
                 tasks: ['clean:images', 'copy:images'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
             images: {
                 files: [{
                     expand: true,
-                    cwd: '<%= proj.src.static %>/images/<%= proj.build.path %>',
+                    cwd: '<%= proj.src.static %>/images/<%= proj.src.path %>',
                     src: '**',
                     dest: '<%= proj.build.static %>/mobile/images/<%= proj.build.path %>',
                     filter: 'isFile'
@@ -83,7 +83,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= proj.src.pages %>/pages/<%= proj.build.path %>',
+                    cwd: '<%= proj.build.pages %>/pages/<%= proj.build.path %>',
                     src: ['**.html'],
                     dest: '<%= proj.build.pages %>/pages/<%= proj.build.path %>',
                     ext: '.html'
@@ -102,7 +102,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= proj.src.static %>/styles/<%= proj.build.path %>',
+                    cwd: '<%= proj.src.static %>/styles/<%= proj.src.path %>',
                     src: ['**.less'],
                     dest: '<%= proj.build.static %>/mobile/styles/<%= proj.build.path %>',
                     ext: '.css'
@@ -115,7 +115,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= proj.src.static %>/styles/<%= proj.build.path %>',
+                    cwd: '<%= proj.src.static %>/styles/<%= proj.src.path %>',
                     src: ['**/*.less'],
                     dest: '<%= proj.build.static %>/mobile/styles/<%= proj.build.path %>',
                     ext: '.css'
@@ -131,7 +131,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= proj.src.static %>/scripts/<%= proj.build.path %>',
+                    cwd: '<%= proj.src.static %>/scripts/<%= proj.src.path %>',
                     src: ['**.js'],
                     dest: '<%= proj.build.static %>/mobile/scripts/<%= proj.build.path %>',
                     ext: '.js'
@@ -143,7 +143,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= proj.src.static %>/scripts/<%= proj.build.path %>',
+                    cwd: '<%= proj.src.static %>/scripts/<%= proj.src.path %>',
                     src: ['**.js'],
                     dest: '<%= proj.build.static %>/mobile/scripts/<%= proj.build.path %>',
                     ext: '.js'
@@ -189,12 +189,27 @@ module.exports = function(grunt) {
                 '!<%= proj.build.static %>/mobile/{styles,scripts,images}/<%= proj.build.path %>/*.*.{css,js,png,jpg,gif}',
                 '<%= proj.build.static %>/mobile/{styles,scripts,images}/<%= proj.build.path %>/**.map'
             ]
+        },
+
+        includes: {
+            default: {
+                options: {
+                    includePath: '<%= proj.src.pages %>'
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= proj.src.pages %>/pages/<%= proj.src.path %>',
+                    src: ['**.html'],
+                    dest: '<%= proj.build.pages %>/pages/<%= proj.build.path %>',
+                    ext: '.html'
+                }]
+            }
         }
     });
 
     grunt.registerTask('dev', [
         'clean',
-        'htmlmin',
+        'includes',
         'less:dev',
         'uglify:dev',
         'copy:images',
@@ -205,6 +220,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', [
         'clean',
+        'includes',
         'htmlmin',
         'less:build',
         'uglify:build',
