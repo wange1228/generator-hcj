@@ -51,6 +51,26 @@ grunt dev
 grunt build
 ```
 
+## 目录结构
+```
+├── financing-frontend-mobile-develop
+│   ├── images
+│   ├── pages
+│   ├── scripts
+│   └── styles
+├── financing-frontend-mobile-static
+│   └── mobile
+│       ├── images
+│       ├── scripts
+│       └── styles
+├── financing-mobile
+│   └── financing-mobile-webapp
+│       └── src
+├── Gruntfile.js
+├── package.json
+└── project.json
+```
+
 ## 未完待续
 1. 目前仅支持移动端的开发环境（因为移动端环境比较恶劣，优先解决）
 2. 前端 Git 仓库尚未和后端分离
