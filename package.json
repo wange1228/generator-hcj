@@ -8,6 +8,7 @@
   },
   "repository": {
     "type": "git",
+    "url": "git@gitlab.tools.vipshop.com:wange.zhu/hcj_engine.git"
   },
   "devDependencies": {
     "connect-livereload": "^0.5.4",
