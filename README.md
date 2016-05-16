@@ -29,9 +29,9 @@
 7. 支持打包自动添加并修改 hash 文件名
 
 ## 使用方法
-- 从 [HCJ_Engine](http://gitlab.tools.vipshop.com/wange.zhu/hcj_engine/tree/master) 项目的仓库中获取最新代码，并放置于 financing 根目录下
-- 执行 `npm install`
-- 配置 project.json，如下：
+* 从 [HCJ_Engine](http://gitlab.tools.vipshop.com/wange.zhu/hcj_engine/tree/master) 项目的仓库中获取最新代码，并放置于 financing 根目录下
+* 执行 `npm install`
+* 配置 project.json，如下：
 
 ```json
 {
@@ -50,13 +50,13 @@
 }
 ```
 
-- 开发模式
+* 开发模式
 
 ```shell
 grunt dev
 ```
 
-- 打包模式
+* 打包模式
 
 ```shell
 grunt build
@@ -83,8 +83,8 @@ grunt build
 ```
 
 ## 未完待续
-1. 目前仅支持移动端的开发环境（因为移动端环境比较恶劣，优先解决）
-2. 前端 Git 仓库尚未和后端分离
+* 目前仅支持移动端的开发环境（因为移动端环境比较恶劣，优先解决）
+* 前端 Git 仓库尚未和后端分离
 
 ## 更新日志
 | Date          | Version       | Log           |
