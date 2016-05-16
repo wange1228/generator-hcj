@@ -26,15 +26,17 @@
 
 ```json
 {
-    "src": {
-        "pages": "financing-frontend-mobile-develop",
-        "static": "financing-frontend-mobile-develop",
-        "path": "activity/20160514"
-    },
-    "build": {
-        "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp",
-        "static": "financing-frontend-mobile-static",
-        "path": "activity/20160514"
+    "project": {
+        "src": {
+            "pages": "financing-frontend-mobile-develop",
+            "static": "financing-frontend-mobile-develop",
+            "path": "activity/20160514"
+        },
+        "build": {
+            "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp",
+            "static": "financing-frontend-mobile-static",
+            "path": "activity/20160514"
+        }
     }
 }
 ```
