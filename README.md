@@ -19,6 +19,15 @@
 5. 解决提交代码后经常发生冲突的问题
 6. 为前后端分离打下基础
 
+## 功能特性
+1. 支持 HttpSever 功能，本地秒启服务
+2. 支持 LiveReload，保存文件后自动刷新浏览器，不用按 F5 刷新
+3. 支持 SourceMap，压缩的代码一样可以断点调试
+4. 支持 HTML / CSS / JavaScript 的压缩
+5. 支持 include 的方式引入 HTML 文件
+6. 支持 LESS 语法的 CSS 预编译
+7. 支持打包自动添加并修改 hash 文件名
+
 ## 使用方法
 - 从 [HCJ_Engine](http://gitlab.tools.vipshop.com/wange.zhu/hcj_engine/tree/master) 项目的仓库中获取最新代码，并放置于 financing 根目录下
 - 执行 `npm install`
