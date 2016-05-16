@@ -63,6 +63,7 @@ grunt build
 ```
 
 ## 目录结构
+
 ```plain
 ├── financing-frontend-mobile-develop
 │   ├── images
@@ -81,6 +82,10 @@ grunt build
 ├── package.json
 └── project.json
 ```
+
+## 未完待续 
+* 目前仅支持移动端的开发环境（因为移动端环境比较恶劣，优先解决）
+* 前端 Git 仓库尚未和后端分离
 
 ## 更新日志
 | Date          | Version       | Log           |
