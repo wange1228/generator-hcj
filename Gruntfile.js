@@ -135,12 +135,6 @@ module.exports = function(grunt) {
                     src: ['**.js'],
                     dest: '<%= proj.build.static %>/mobile/scripts/<%= proj.build.path %>',
                     ext: '.js'
-                },{
-                    expand: true,
-                    cwd: '<%= proj.src.static %>/scripts/lib',
-                    src: ['**/*.js'],
-                    dest: '<%= proj.build.static %>/mobile/scripts/lib',
-                    ext: '.js'
                 }]
             },
             build: {
