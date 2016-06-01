@@ -42,9 +42,11 @@
 
 ## 使用方法
 
+* 安装 [Node.js](https://nodejs.org/)
+* 安装 [Grunt](http://www.gruntjs.com/)
 * 从 [HCJ_Engine](http://gitlab.tools.vipshop.com/wange.zhu/hcj_engine/tree/master) 项目的仓库中获取最新代码，并放置于 financing 根目录下
 * 执行 `npm install`
-* 配置 project.json，如下：
+* 配置 config.json，如下：
 
 ```json
 {
