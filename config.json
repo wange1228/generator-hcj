@@ -1,14 +1,22 @@
 {
-    "project": {
+    "server": {
+        "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp",
+        "static": "financing-frontend-mobile-static/mobile"
+    },
+    "path": {
         "src": {
-            "pages": "financing-frontend-mobile-develop",
-            "static": "financing-frontend-mobile-develop",
-            "path": "activity/20160514"
+            "pages": "financing-frontend-mobile-develop/pages/activity/20160514",
+            "styles": "financing-frontend-mobile-develop/styles/activity/20160514",
+            "scripts": "financing-frontend-mobile-develop/scripts/activity/20160514",
+            "images": "financing-frontend-mobile-develop/images/activity/20160514",
+            "slice": "financing-frontend-mobile-develop/slice/activity/20160514"
         },
         "build": {
-            "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp",
-            "static": "financing-frontend-mobile-static",
-            "path": "activity/20160514"
+            "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp/pages/activity/20160514",
+            "styles": "financing-frontend-mobile-static/mobile/styles/activity/20160514",
+            "scripts": "financing-frontend-mobile-static/mobile/scripts/activity/20160514",
+            "images": "financing-frontend-mobile-static/mobile/images/activity/20160514",
+            "sprite": "financing-frontend-mobile-static/mobile/sprite/activity/20160514"
         }
     }
 }
