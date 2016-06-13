@@ -95,7 +95,7 @@ grunt build
 │       └── src
 ├── Gruntfile.js
 ├── package.json
-└── project.json
+└── config.json
 ```
 
 ---
