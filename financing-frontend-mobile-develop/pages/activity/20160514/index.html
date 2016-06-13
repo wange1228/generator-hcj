@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles/activity/20160514/index.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <script id="template-id" type="text/html">
+        {{if name}}
+        <h1>{{name}}</h1>
+        {{/if}}
+
+        {{if gender}}
+        <h2>{{gender}}</h2>
+        {{/if}}
+    </script>
+
+    <script src="/scripts/lib/requirejs/require.js" data-main="index"></script>
+
+    <script>
+    requirejs.config({
+        baseUrl: '/scripts/',
+        paths: {
+            zepto: 'lib/zepto/zepto',
+            template: 'lib/artTemplate/template',
+            util: 'common/util',
+            index: 'activity/20160514/index'
+        },
+        shim: {
+            zepto: {
+                exports: '$'
+            }
+        }
+    });
+    </script>
+</body>
+</html>
