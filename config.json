@@ -1,22 +1,56 @@
 {
-    "server": {
-        "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp",
-        "static": "financing-frontend-mobile-static/mobile"
-    },
-    "path": {
-        "src": {
-            "pages": "financing-frontend-mobile-develop/pages/activity/20160514",
-            "styles": "financing-frontend-mobile-develop/styles/activity/20160514",
-            "scripts": "financing-frontend-mobile-develop/scripts/activity/20160514",
-            "images": "financing-frontend-mobile-develop/images/activity/20160514",
-            "slice": "financing-frontend-mobile-develop/slice/activity/20160514"
+    "project": "activity/20160514",
+    "type": "mobile",
+    "locals": {
+        "desktop": {
+            "server": {
+                "pages": "financing-desktop/financing-desktop-webapp/src/main/resources",
+                "static": "financing-static"
+            },
+            "path": {
+                "src": {
+                    "pages": "financing-frontend-develop/ftl",
+                    "styles": "financing-frontend-develop/style",
+                    "scripts": "financing-frontend-develop/js",
+                    "images": "financing-frontend-develop/images",
+                    "slice": "financing-frontend-develop/slice"
+                },
+                "build": {
+                    "pages": "financing-desktop/financing-desktop-webapp/src/main/resources/ftl",
+                    "styles": "financing-static/style",
+                    "scripts": "financing-static/js",
+                    "images": "financing-static/images",
+                    "sprite": "financing-static/sprite"
+                }
+            }
         },
-        "build": {
-            "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp/pages/activity/20160514",
-            "styles": "financing-frontend-mobile-static/mobile/styles/activity/20160514",
-            "scripts": "financing-frontend-mobile-static/mobile/scripts/activity/20160514",
-            "images": "financing-frontend-mobile-static/mobile/images/activity/20160514",
-            "sprite": "financing-frontend-mobile-static/mobile/sprite/activity/20160514"
+        "mobile": {
+            "server": {
+                "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp",
+                "static": "financing-frontend-mobile-static/mobile"
+            },
+            "path": {
+                "src": {
+                    "pages": "financing-frontend-mobile-develop/pages",
+                    "styles": "financing-frontend-mobile-develop/styles",
+                    "scripts": "financing-frontend-mobile-develop/scripts",
+                    "images": "financing-frontend-mobile-develop/images",
+                    "slice": "financing-frontend-mobile-develop/slice"
+                },
+                "build": {
+                    "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp/pages",
+                    "styles": "financing-frontend-mobile-static/mobile/styles",
+                    "scripts": "financing-frontend-mobile-static/mobile/scripts",
+                    "images": "financing-frontend-mobile-static/mobile/images",
+                    "sprite": "financing-frontend-mobile-static/mobile/sprite"
+                }
+            }
+        },
+        "custom": {
+            "server": {
+            },
+            "path": {
+            }
         }
     }
 }
