@@ -50,16 +50,14 @@
 
 ```json
 {
-    "project": {
-        "src": {
-            "pages": "financing-frontend-mobile-develop",
-            "static": "financing-frontend-mobile-develop",
-            "path": "activity/20160514"
+    "project": "activity/20160514",
+    "type": "mobile",
+    "locals": {
+        "desktop": {
         },
-        "build": {
-            "pages": "financing-mobile/financing-mobile-webapp/src/main/webapp",
-            "static": "financing-frontend-mobile-static",
-            "path": "activity/20160514"
+        "mobile": {
+        },
+        "custom": {
         }
     }
 }
@@ -98,7 +96,7 @@ grunt build
 ├── Gruntfile.js
 ├── package.json
 └── project.json
-``` 
+```
 
 ---
 
