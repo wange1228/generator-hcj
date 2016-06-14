@@ -41,7 +41,7 @@
 ---
 
 ## 界面预览
-![generator-hcj preview](http://wange.qiniudn.com/wp-content/uploads/2016/06/yo_hcj.jpeg)
+![generator-hcj preview](http://wange.qiniudn.com/wp-content/uploads/2016/06/yo_hcj.png)
 
 ---
 
