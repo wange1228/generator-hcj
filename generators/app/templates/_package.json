@@ -1,13 +1,5 @@
 {
   "name": "generator-hcj",
-  "version": "0.4.7",
-  "description": "HTML/CSS/JavaScript前端开发工作流，适用于互联网金融事业部开发环境",
-  "author": {
-    "name": "朱一成",
-    "email": "wange.zhu@vipshop.com"
-  },
-  "homepage": "https://github.com/wange1228/generator-hcj",
-  "repository": "git://github.com/wange1228/generator-hcj",
   "devDependencies": {
     "connect-livereload": "^0.5.4",
     "grunt": "^1.0.1",

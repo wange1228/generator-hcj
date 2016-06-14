@@ -45,7 +45,8 @@
 * 安装 [Node.js](https://nodejs.org/)
 * 安装 [Grunt](http://www.gruntjs.com/)
 * 安装 [Yeoman](http://yeoman.io/)
-* 执行 yo HCJ
+* 执行 `npm install -g generator-hcj`
+* 执行 `yo hcj`
 
 * 开发模式
 
