@@ -40,6 +40,11 @@
 
 ---
 
+## 界面预览
+![generator-hcj preview](http://wange.qiniudn.com/wp-content/uploads/2016/06/yo_hcj.jpeg)
+
+---
+
 ## 使用方法
 
 * 安装 [Node.js](https://nodejs.org/)
