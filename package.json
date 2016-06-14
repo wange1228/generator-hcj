@@ -1,15 +1,15 @@
 {
   "name": "generator-HCJ",
-  "version": "0.4.1",
+  "version": "0.4.4",
   "description": "HTML/CSS/JavaScript前端开发工作流，适用于互联网金融事业部开发环境",
   "author": {
     "name": "朱一成",
     "email": "wange.zhu@vipshop.com"
   },
-  "homepage": "http://gitlab.tools.vipshop.com/wange.zhu/hcj/tree/master",
+  "homepage": "https://github.com/wange1228/HCJ",
   "repository": {
     "type": "git",
-    "url": "git@gitlab.tools.vipshop.com:wange.zhu/hcj.git"
+    "url": "git@github.com:wange1228/HCJ.git"
   },
   "devDependencies": {
     "connect-livereload": "^0.5.4",
