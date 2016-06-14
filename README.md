@@ -3,7 +3,7 @@
 你还在为跑不起来的开发环境发愁吗？  
 你还在为蛋疼的调试过程捉急吗？  
 你还在为代码冲突而忧伤吗？  
-开发调试，打包提测的必备良药 —— **HCJ Engine** 上市了！
+开发调试，打包提测的必备良药 —— **HCJ** 上市了！
 
 ---
 
@@ -44,24 +44,8 @@
 
 * 安装 [Node.js](https://nodejs.org/)
 * 安装 [Grunt](http://www.gruntjs.com/)
-* 从 [HCJ_Engine](http://gitlab.tools.vipshop.com/wange.zhu/hcj_engine/tree/master) 项目的仓库中获取最新代码，并放置于 financing 根目录下
-* 执行 `npm install`
-* 配置 .hcjrc，如下：
-
-```json
-{
-    "project": "activity/20160514",
-    "type": "mobile",
-    "locals": {
-        "desktop": {
-        },
-        "mobile": {
-        },
-        "custom": {
-        }
-    }
-}
-```
+* 安装 [Yeoman](http://yeoman.io/)
+* 执行 yo HCJ
 
 * 开发模式
 
@@ -104,6 +88,7 @@ grunt build
 
 | Date          | Version       | Log           |
 | ------------- | ------------- | ------------- |
+| 2016.06.14    | v0.4.0        | 支持 Yeoman 开发流程 |
 | 2016.06.12    | v0.3.0        | 增加对桌面端的配置兼容 |
 | 2016.05.15    | v0.2.0        | 增加 grunt-includes 模块，实现 html 模块化开发 |
 | 2016.05.14    | v0.1.0        | 初始版本，解决前端环境独立问题 |

@@ -1,0 +1,26 @@
+{
+    "project": "<%= projectName %>",
+    "type": "<%= projectType %>",
+    "locals": {
+        "server": {
+            "pages": "<%= pagesSvr %>",
+            "static": "<%= staticSvr %>",
+            "port": "<%= port %>",
+            "livereload": "<%= livereload %>"
+        },
+        "path": {
+            "src": {
+                "pages": "<%= srcPages %>",
+                "styles": "<%= srcStyles %>",
+                "scripts": "<%= srcScripts %>",
+                "images": "<%= srcImages %>"
+            },
+            "build": {
+                "pages": "<%= buildPages %>",
+                "styles": "<%= buildStyles %>",
+                "scripts": "<%= buildScripts %>",
+                "images": "<%= buildImages %>"
+            }
+        }
+    }
+}

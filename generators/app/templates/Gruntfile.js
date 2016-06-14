@@ -1,28 +1,13 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
-    var config = (function() {
-        var cfg = grunt.file.readJSON('.hcjrc'),
-            proj = cfg.project,
-            type = cfg.type,
-            locals = cfg.locals[cfg.type];
-
-        for (var src in locals.path.src) {
-            locals.path.src[src] = locals.path.src[src] + '/' + proj;
-        }
-        for (var build in locals.path.build) {
-            locals.path.build[build] = locals.path.build[build] + '/' + proj;
-        }
-
-        console.log(locals);
-        return locals;
-    })();
+    var config = grunt.file.readJSON('.hcjrc').locals;
 
     grunt.initConfig({
         connect: {
             options: {
-                port: 80,
+                port: config.server.port,
                 hostname: '127.0.0.1',
-                livereload: 35729
+                livereload: config.server.livereload
             },
             src: {
                 options: {
@@ -51,28 +36,28 @@ module.exports = function(grunt) {
                 files: [config.path.src.pages + '/**.html'],
                 tasks: ['clean:pages', 'includes'],
                 options: {
-                    livereload: '<%= connect.options.livereload %>'
+                    livereload: config.server.livereload
                 }
             },
             styles: {
                 files: [config.path.src.styles + '/**.less'],
                 tasks: ['clean:styles', 'less:dev'],
                 options: {
-                    livereload: '<%= connect.options.livereload %>'
+                    livereload: config.server.livereload
                 }
             },
             scripts: {
                 files: [config.path.src.scripts + '/**.js'],
                 tasks: ['clean:scripts', 'uglify:dev'],
                 options: {
-                    livereload: '<%= connect.options.livereload %>'
+                    livereload: config.server.livereload
                 }
             },
             images: {
                 files: [config.path.src.images + '/**.*'],
                 tasks: ['clean:images', 'copy:images'],
                 options: {
-                    livereload: '<%= connect.options.livereload %>'
+                    livereload: config.server.livereload
                 }
             }
         },

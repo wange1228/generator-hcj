@@ -1,6 +1,6 @@
 {
-  "name": "generator-HCJ",
-  "version": "0.4.0",
+  "name": "HCJ",
+  "version": "0.3.2",
   "description": "HTML/CSS/JavaScript前端开发工作流，适用于互联网金融事业部开发环境",
   "author": {
     "name": "朱一成",
