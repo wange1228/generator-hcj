@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
     var config = (function() {
-        var cfg = grunt.file.readJSON('config.json'),
+        var cfg = grunt.file.readJSON('.hcjrc'),
             proj = cfg.project,
             type = cfg.type,
             locals = cfg.locals[cfg.type];
