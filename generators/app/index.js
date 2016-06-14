@@ -301,7 +301,6 @@ var HCJGenerator = yeoman.generators.Base.extend({
     },
 
     writing: function() {
-        this.copy('package.json', 'package.json');
         this.copy('Gruntfile.js', 'Gruntfile.js');
         this.copy('.hcjrc', '.hcjrc');
     },
