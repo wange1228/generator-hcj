@@ -1,11 +1,20 @@
 {
   "name": "generator-hcj",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "HTML/CSS/JavaScript前端开发工作流，适用于互联网金融事业部开发环境",
+  "license": "MIT",
   "author": {
-    "name": "朱一成",
-    "email": "wange.zhu@vipshop.com"
+    "name": "wange.zhu",
+    "email": "i@wange.im"
   },
+  "repository": "git://github.com/wange1228/generator-hcj",
   "homepage": "https://github.com/wange1228/generator-hcj",
-  "repository": "git://github.com/wange1228/generator-hcj"
+  "bugs": "https://github.com/wange1228/generator-hcj/issues",
+  "keywords": [
+    "hcj",
+    "generator-hcj"
+  ],
+  "engines": {
+    "node": ">=0.10.0"
+  }
 }
