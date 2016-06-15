@@ -1,4 +1,4 @@
-# HCJ 前端开发工作流
+# HCJ 前端开发工作流 [![NPM Version](http://img.shields.io/npm/v/generator-hcj.svg?style=flat)](https://www.npmjs.com/package/generator-hcj "Package version") [![cnpm](https://img.shields.io/badge/cnpm-ready-blue.svg?style=flat)](https://npm.taobao.org/package/generator-hcj "get from cnpm") [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://opensource.org/licenses/MIT "Feel free to contribute.")
 
 你还在为跑不起来的开发环境发愁吗？  
 你还在为蛋疼的调试过程捉急吗？  
