@@ -1,5 +1,6 @@
 {
-  "name": "generator-hcj",
+  "name": "<%= projectName %>",
+  "author": "<%= authorName %>",
   "devDependencies": {
     "connect-livereload": "^0.5.4",
     "grunt": "^1.0.1",

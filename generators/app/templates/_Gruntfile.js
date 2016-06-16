@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
-    var config = grunt.file.readJSON('.hcjrc').locals;
+    var config = grunt.file.readJSON('.hcjrc');
 
     grunt.initConfig({
         connect: {

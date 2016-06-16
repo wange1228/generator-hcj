@@ -23,6 +23,12 @@ var HCJGenerator = yeoman.generators.Base.extend({
                 default: 'project-xxx'
             },
             {
+                name: 'authorName',
+                message: '开发人员：',
+                type: 'input',
+                default: this.user.git.username + ' ' + '<' + this.user.git.email + '>'
+            },
+            {
                 name: 'projectType',
                 message: '项目类型：',
                 type: 'list',
@@ -301,6 +307,21 @@ var HCJGenerator = yeoman.generators.Base.extend({
     },
 
     writing: function() {
+        // 根据配置创建目录
+        this.mkdir(this.destinationRoot() + '/' + this.srcPages);
+        this.mkdir(this.destinationRoot() + '/' + this.srcStyles);
+        this.mkdir(this.destinationRoot() + '/' + this.srcScripts);
+        this.mkdir(this.destinationRoot() + '/' + this.srcImages);
+
+        // 复制模板文件
+        this.copy('demo/'+this.projectType+'/hcj-demo.html',
+                            this.srcPages+'/hcj-demo.html');
+        this.copy('demo/'+this.projectType+'/hcj-demo.less',
+                            this.srcStyles+'/hcj-demo.less');
+        this.copy('demo/'+this.projectType+'/hcj-demo.js',
+                            this.srcScripts+'/hcj-demo.js');
+
+        // 复制配置文件
         this.copy('_Gruntfile.js', 'Gruntfile.js');
         this.copy('_package.json', 'package.json');
         this.copy('_.hcjrc', '.hcjrc');
