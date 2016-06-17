@@ -3,11 +3,12 @@ module.exports = {
         server: {
             pages: 'financing-desktop/financing-desktop-webapp/src/main/resources',
             static: 'financing-static',
-            port: '80',
+            port: '8080',
             livereload: '35729'
         },
         path: {
             src: {
+                base: 'financing-frontend-develop',
                 pages: 'financing-frontend-develop/ftl',
                 styles: 'financing-frontend-develop/style',
                 scripts: 'financing-frontend-develop/js',
@@ -30,6 +31,7 @@ module.exports = {
         },
         path: {
             src: {
+                base: 'financing-frontend-mobile-develop',
                 pages: 'financing-frontend-mobile-develop/pages',
                 styles: 'financing-frontend-mobile-develop/styles',
                 scripts: 'financing-frontend-mobile-develop/scripts',

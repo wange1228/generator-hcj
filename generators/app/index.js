@@ -48,7 +48,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'desktop';
                 },
                 name: 'pagesSvr',
-                message: '静态页面服务器目录：',
+                message: '静态页面服务器路径：',
                 type: 'input',
                 default: config.desktop.server.pages
             },
@@ -57,7 +57,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'pagesSvr',
-                message: '静态页面服务器目录：',
+                message: '静态页面服务器路径：',
                 type: 'input',
                 default: config.mobile.server.pages
             },
@@ -66,7 +66,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'desktop';
                 },
                 name: 'staticSvr',
-                message: '静态资源服务器目录：',
+                message: '静态资源服务器路径：',
                 type: 'input',
                 default: config.desktop.server.static
             },
@@ -75,7 +75,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'staticSvr',
-                message: '静态资源服务器目录：',
+                message: '静态资源服务器路径：',
                 type: 'input',
                 default: config.mobile.server.static
             },
@@ -119,8 +119,30 @@ var HCJGenerator = yeoman.generators.Base.extend({
                 when: function(response) {
                     return response.projectType === 'desktop';
                 },
+                name: 'srcBase',
+                message: 'Base 开发路径：',
+                type: 'input',
+                default: function(response) {
+                    return config.desktop.path.src.base;
+                }
+            },
+            {
+                when: function(response) {
+                    return response.projectType === 'mobile';
+                },
+                name: 'srcBase',
+                message: 'Base 开发路径：',
+                type: 'input',
+                default: function(response) {
+                    return config.mobile.path.src.base;
+                }
+            },
+            {
+                when: function(response) {
+                    return response.projectType === 'desktop';
+                },
                 name: 'srcPages',
-                message: 'HTML 开发目录：',
+                message: 'HTML 开发路径：',
                 type: 'input',
                 default: function(response) {
                     return config.desktop.path.src.pages + '/' + response.projectName;
@@ -131,7 +153,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'srcPages',
-                message: 'HTML 开发目录：',
+                message: 'HTML 开发路径：',
                 type: 'input',
                 default: function(response) {
                     return config.mobile.path.src.pages + '/' + response.projectName;
@@ -142,7 +164,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'desktop';
                 },
                 name: 'srcStyles',
-                message: 'CSS 开发目录：',
+                message: 'CSS 开发路径：',
                 type: 'input',
                 default: function(response) {
                     return config.desktop.path.src.styles + '/' + response.projectName;
@@ -153,7 +175,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'srcStyles',
-                message: 'CSS 开发目录：',
+                message: 'CSS 开发路径：',
                 type: 'input',
                 default: function(response) {
                     return config.mobile.path.src.styles + '/' + response.projectName;
@@ -164,7 +186,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'desktop';
                 },
                 name: 'srcScripts',
-                message: 'JavaScript 开发目录：',
+                message: 'JavaScript 开发路径：',
                 type: 'input',
                 default: function(response) {
                     return config.desktop.path.src.scripts + '/' + response.projectName;
@@ -175,7 +197,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'srcScripts',
-                message: 'JavaScript 开发目录：',
+                message: 'JavaScript 开发路径：',
                 type: 'input',
                 default: function(response) {
                     return config.mobile.path.src.scripts + '/' + response.projectName;
@@ -186,7 +208,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'desktop';
                 },
                 name: 'srcImages',
-                message: 'Image 开发目录：',
+                message: 'Image 开发路径：',
                 type: 'input',
                 default: function(response) {
                     return config.desktop.path.src.images + '/' + response.projectName;
@@ -197,7 +219,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'srcImages',
-                message: 'Image 开发目录：',
+                message: 'Image 开发路径：',
                 type: 'input',
                 default: function(response) {
                     return config.mobile.path.src.images + '/' + response.projectName;
@@ -208,7 +230,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'desktop';
                 },
                 name: 'buildPages',
-                message: 'HTML 打包目录：',
+                message: 'HTML 打包路径：',
                 type: 'input',
                 default: function(response) {
                     return config.desktop.path.build.pages + '/' + response.projectName;
@@ -219,7 +241,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'buildPages',
-                message: 'HTML 打包目录：',
+                message: 'HTML 打包路径：',
                 type: 'input',
                 default: function(response) {
                     return config.mobile.path.build.pages + '/' + response.projectName;
@@ -230,7 +252,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'desktop';
                 },
                 name: 'buildStyles',
-                message: 'CSS 打包目录：',
+                message: 'CSS 打包路径：',
                 type: 'input',
                 default: function(response) {
                     return config.desktop.path.build.styles + '/' + response.projectName;
@@ -241,7 +263,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'buildStyles',
-                message: 'CSS 打包目录：',
+                message: 'CSS 打包路径：',
                 type: 'input',
                 default: function(response) {
                     return config.mobile.path.build.styles + '/' + response.projectName;
@@ -252,7 +274,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'desktop';
                 },
                 name: 'buildScripts',
-                message: 'JavaScript 打包目录：',
+                message: 'JavaScript 打包路径：',
                 type: 'input',
                 default: function(response) {
                     return config.desktop.path.build.scripts + '/' + response.projectName;
@@ -263,7 +285,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'buildScripts',
-                message: 'JavaScript 打包目录：',
+                message: 'JavaScript 打包路径：',
                 type: 'input',
                 default: function(response) {
                     return config.mobile.path.build.scripts + '/' + response.projectName;
@@ -274,7 +296,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'desktop';
                 },
                 name: 'buildImages',
-                message: 'Image 打包目录：',
+                message: 'Image 打包路径：',
                 type: 'input',
                 default: function(response) {
                     return config.desktop.path.build.images + '/' + response.projectName;
@@ -285,7 +307,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return response.projectType === 'mobile';
                 },
                 name: 'buildImages',
-                message: 'Image 打包目录：',
+                message: 'Image 打包路径：',
                 type: 'input',
                 default: function(response) {
                     return config.mobile.path.build.images + '/' + response.projectName;
@@ -300,26 +322,18 @@ var HCJGenerator = yeoman.generators.Base.extend({
                 }
             }
 
-            done();
-
             this.log(chalk.green('=== 配置完成 ==='));
+            done();
         }.bind(this));
     },
 
     writing: function() {
-        // 根据配置创建目录
-        this.mkdir(this.destinationRoot() + '/' + this.srcPages);
-        this.mkdir(this.destinationRoot() + '/' + this.srcStyles);
-        this.mkdir(this.destinationRoot() + '/' + this.srcScripts);
-        this.mkdir(this.destinationRoot() + '/' + this.srcImages);
-
         // 复制模板文件
-        this.copy('demo/'+this.projectType+'/hcj-demo.html',
-                            this.srcPages+'/hcj-demo.html');
-        this.copy('demo/'+this.projectType+'/hcj-demo.less',
-                            this.srcStyles+'/hcj-demo.less');
-        this.copy('demo/'+this.projectType+'/hcj-demo.js',
-                            this.srcScripts+'/hcj-demo.js');
+        this.directory('demo/'+this.projectType+'/srcPages/hcj-demo', this.srcPages);
+        this.directory('demo/'+this.projectType+'/srcStyles/hcj-demo', this.srcStyles);
+        this.directory('demo/'+this.projectType+'/srcScripts/hcj-demo', this.srcScripts);
+        this.directory('demo/'+this.projectType+'/srcScripts/lib', config[this.projectType].path.src.scripts);
+        this.directory('demo/'+this.projectType+'/srcImages/hcj-demo', this.srcImages);
 
         // 复制配置文件
         this.copy('_Gruntfile.js', 'Gruntfile.js');
@@ -332,6 +346,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
             bower: false,
             npm: true,
             callback: function () {
+                this.spawnCommand('grunt', ['dev']);
                 this.log(chalk.green('=== 安装完成 ==='));
             }.bind(this)
         });
