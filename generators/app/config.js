@@ -26,7 +26,7 @@ module.exports = {
         server: {
             pages: 'financing-mobile/financing-mobile-webapp/src/main/webapp',
             static: 'financing-frontend-mobile-static/mobile',
-            port: '80',
+            port: '8080',
             livereload: '35729'
         },
         path: {

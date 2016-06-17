@@ -330,9 +330,10 @@ var HCJGenerator = yeoman.generators.Base.extend({
     writing: function() {
         // 复制模板文件
         this.directory('demo/'+this.projectType+'/srcPages/hcj-demo', this.srcPages);
+        this.directory('demo/'+this.projectType+'/srcPages/common', config[this.projectType].path.src.pages + '/common');
         this.directory('demo/'+this.projectType+'/srcStyles/hcj-demo', this.srcStyles);
         this.directory('demo/'+this.projectType+'/srcScripts/hcj-demo', this.srcScripts);
-        this.directory('demo/'+this.projectType+'/srcScripts/lib', config[this.projectType].path.src.scripts);
+        this.directory('demo/'+this.projectType+'/srcScripts/lib', config[this.projectType].path.src.scripts + '/lib');
         this.directory('demo/'+this.projectType+'/srcImages/hcj-demo', this.srcImages);
 
         // 复制配置文件
