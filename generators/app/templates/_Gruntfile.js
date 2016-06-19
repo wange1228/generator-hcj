@@ -12,8 +12,8 @@ module.exports = function(grunt) {
             src: {
                 options: {
                     base: [
-                        config.server.pages,
-                        config.server.static,
+                        config.server.pages.path,
+                        config.server.static.path,
                         './'
                     ]
                 }
@@ -23,8 +23,8 @@ module.exports = function(grunt) {
                     keepalive: true,
                     livereload: false,
                     base: [
-                        config.server.pages,
-                        config.server.static,
+                        config.server.pages.path,
+                        config.server.static.path,
                         './'
                     ]
                 }
@@ -96,7 +96,7 @@ module.exports = function(grunt) {
                     sourceMapRootpath: '/',
                     sourceMap: true,
                     sourceMapFileInline: true,
-                    paths: config.server.static,
+                    paths: config.server.static.path,
                     compress: true
                 },
                 files: [{
@@ -109,7 +109,7 @@ module.exports = function(grunt) {
             },
             build: {
                 options: {
-                    paths: config.server.static,
+                    paths: config.server.static.path,
                     compress: true
                 },
                 files: [{

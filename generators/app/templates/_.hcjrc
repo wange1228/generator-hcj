@@ -3,8 +3,14 @@
         "name": "<%= projectName %>"
     },
     "server": {
-        "pages": "<%= pagesSvr %>",
-        "static": "<%= staticSvr %>",
+        "pages": {
+            "path": "<%= pagesSvrPath %>",
+            "host": "<%= pagesSvrHost %>"
+        },
+        "static": {
+            "path": "<%= staticSvrPath %>",
+            "host": "<%= staticSvrHost %>"
+        },
         "port": "<%= port %>",
         "livereload": "<%= livereload %>"
     },

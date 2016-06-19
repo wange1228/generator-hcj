@@ -1,8 +1,14 @@
 module.exports = {
     desktop: {
         server: {
-            pages: 'financing-desktop/financing-desktop-webapp/src/main/resources',
-            static: 'financing-static',
+            pages: {
+                path: 'financing-desktop/financing-desktop-webapp/src/main/resources',
+                host: 'lc.vip.com'
+            },
+            static: {
+                path: 'financing-static',
+                host: 'lc.vipstatic.com'
+            },
             port: '80',
             livereload: '35729'
         },
@@ -24,8 +30,14 @@ module.exports = {
     },
     mobile: {
         server: {
-            pages: 'financing-mobile/financing-mobile-webapp/src/main/webapp',
-            static: 'financing-frontend-mobile-static/mobile',
+            pages: {
+                path: 'financing-mobile/financing-mobile-webapp/src/main/webapp',
+                host: 'mlc.vip.com'
+            },
+            static: {
+                path: 'financing-frontend-mobile-static/mobile',
+                host: 'mlc.vipstatic.com'
+            },
             port: '80',
             livereload: '35729'
         },

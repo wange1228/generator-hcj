@@ -47,37 +47,73 @@ var HCJGenerator = yeoman.generators.Base.extend({
                 when: function(response) {
                     return response.projectType === 'desktop';
                 },
-                name: 'pagesSvr',
+                name: 'pagesSvrPath',
                 message: '静态页面服务器路径：',
                 type: 'input',
-                default: config.desktop.server.pages
+                default: config.desktop.server.pages.path
             },
             {
                 when: function(response) {
                     return response.projectType === 'mobile';
                 },
-                name: 'pagesSvr',
+                name: 'pagesSvrPath',
                 message: '静态页面服务器路径：',
                 type: 'input',
-                default: config.mobile.server.pages
+                default: config.mobile.server.pages.path
             },
             {
                 when: function(response) {
                     return response.projectType === 'desktop';
                 },
-                name: 'staticSvr',
-                message: '静态资源服务器路径：',
+                name: 'pagesSvrHost',
+                message: '静态页面域名：',
                 type: 'input',
-                default: config.desktop.server.static
+                default: config.desktop.server.pages.host
             },
             {
                 when: function(response) {
                     return response.projectType === 'mobile';
                 },
-                name: 'staticSvr',
+                name: 'pagesSvrHost',
+                message: '静态页面域名：',
+                type: 'input',
+                default: config.mobile.server.pages.host
+            },
+            {
+                when: function(response) {
+                    return response.projectType === 'desktop';
+                },
+                name: 'staticSvrPath',
                 message: '静态资源服务器路径：',
                 type: 'input',
-                default: config.mobile.server.static
+                default: config.desktop.server.static.path
+            },
+            {
+                when: function(response) {
+                    return response.projectType === 'mobile';
+                },
+                name: 'staticSvrPath',
+                message: '静态资源服务器路径：',
+                type: 'input',
+                default: config.mobile.server.static.path
+            },
+            {
+                when: function(response) {
+                    return response.projectType === 'desktop';
+                },
+                name: 'staticSvrHost',
+                message: '静态资源域名：',
+                type: 'input',
+                default: config.desktop.server.static.host
+            },
+            {
+                when: function(response) {
+                    return response.projectType === 'mobile';
+                },
+                name: 'staticSvrHost',
+                message: '静态资源域名：',
+                type: 'input',
+                default: config.mobile.server.static.host
             },
             {
                 when: function(response) {
