@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
     include "../../pages/common/v2/metaHead.html"
+    <link rel="stylesheet" href="//mlc.vipstatic.com/styles/<%= projectName %>/hcj-demo.css">
     <title>HCJ DEMO</title>
 </head>
 <body>
     <h1>Hello HCJ</h1>
-    <script src="/scripts/lib/requirejs/require.js" data-main="hcj-demo"></script>
+    <img src="//mlc.vipstatic.com/images/<%= projectName %>/apply.jpg" alt="">
+    <div class="apply"></div>
+    <script src="//mlc.vipstatic.com/scripts/lib/requirejs/require.js" data-main="hcj-demo"></script>
     <script type="text/javascript">
         requirejs.config({
-            baseUrl: '/scripts/',
+            baseUrl: "//mlc.vipstatic.com/scripts/",
             paths: {
-                'zepto': 'lib/zepto/zepto',
-                'hcj-demo': '<%= projectName %>/hcj-demo'
+                "zepto": "lib/zepto/zepto",
+                "hcj-demo": "<%= projectName %>/hcj-demo"
             },
             shim: {
-                'zepto': {
-                    exports: '$'
+                "zepto": {
+                    exports: "$"
                 }
             }
         });

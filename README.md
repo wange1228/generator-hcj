@@ -90,6 +90,14 @@ grunt build
 
 ---
 
+## 未完待续
+
+1. RequireJS 自动打包合并
+2. CSS Sprite 自动生成
+3. manifest.json 自动生成
+
+---
+
 ## 更新日志
 
 | Date          | Version       | Log           |

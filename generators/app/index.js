@@ -347,7 +347,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
             bower: false,
             npm: true,
             callback: function () {
-                this.spawnCommand('grunt', ['dev']);
+                // this.spawnCommand('grunt', ['dev']);
                 this.log(chalk.green('=== 安装完成 ==='));
             }.bind(this)
         });

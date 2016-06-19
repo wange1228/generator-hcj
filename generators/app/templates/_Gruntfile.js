@@ -183,18 +183,45 @@ module.exports = function(grunt) {
                 },{
                     expand: true,
                     cwd: config.path.build.images,
-                    src: ['*.{png,jpg,gif}'],
+                    src: ['*.{png,jpg,gif,webp}'],
                     dest: config.path.build.images
+                }, {
+                    expand: true,
+                    cwd: config.path.build.scripts.replace(config.project.name, '') + 'lib',
+                    src: ['**/*.js'],
+                    dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
+                    extDot: 'last',
+                    ext: '.js'
                 }]
             }
         },
 
         usemin: {
             options: {
-                assetsDirs: config.path.build.styles
+                assetsDirs: [
+                    config.path.build.styles.replace(config.project.name, ''),
+                    config.path.build.scripts.replace(config.project.name, ''),
+                    config.path.build.images.replace(config.project.name, '')
+                ],
+                patterns: {
+                    pages: [
+                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-]*\.css)', 'g'), 'replace styles in pages'],
+                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages'],
+                        [new RegExp('(\/lib\/.*\/[a-zA-Z0-9\-]*\.js)', 'g'), 'replace scripts in pages'],
+                        [new RegExp(': *[\'\"](('+config.project.name+'|lib)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
+                            var base = config.path.build.scripts.replace(config.project.name, '');
+                            return grunt.filerev.summary[
+                                base + match + '.js'
+                            ].replace(base, '').replace('.js', '');
+                        }]
+                    ],
+                    styles: [
+                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']
+                    ]
+                }
             },
-            html: config.path.build.pages + '/*.html',
-            css: config.path.build.styles + '/*.*.css',
+            pages: config.path.build.pages + '/**.html',
+            styles: config.path.build.styles + '/**.css'
         },
 
         clean: {
@@ -202,13 +229,14 @@ module.exports = function(grunt) {
             styles: config.path.build.styles,
             scripts: config.path.build.scripts,
             images: config.path.build.images,
+            lib: config.path.build.scripts.replace(config.project.name, ''),
             build: [
                 config.path.build.styles + '/*.{css,map}',
                 config.path.build.scripts + '/*.{js,map}',
-                config.path.build.images + '/*.{png,jpg,gif}',
+                config.path.build.images + '/*.{png,jpg,gif,webp}',
                 '!'+config.path.build.styles+'/*.*.css',
                 '!'+config.path.build.scripts+'/*.*.js',
-                '!'+config.path.build.images+'/*.*.{png,jpg,gif}'
+                '!'+config.path.build.images+'/*.*.{png,jpg,gif,webp}'
             ]
         },
 

@@ -3,7 +3,7 @@ module.exports = {
         server: {
             pages: 'financing-desktop/financing-desktop-webapp/src/main/resources',
             static: 'financing-static',
-            port: '8080',
+            port: '80',
             livereload: '35729'
         },
         path: {
@@ -26,7 +26,7 @@ module.exports = {
         server: {
             pages: 'financing-mobile/financing-mobile-webapp/src/main/webapp',
             static: 'financing-frontend-mobile-static/mobile',
-            port: '8080',
+            port: '80',
             livereload: '35729'
         },
         path: {
