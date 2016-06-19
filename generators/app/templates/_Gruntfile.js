@@ -83,7 +83,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: config.path.build.pages,
-                    src: ['**.html'],
+                    src: ['**/*.html'],
                     dest: config.path.build.pages,
                     ext: '.html'
                 }]
@@ -102,7 +102,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: config.path.src.styles,
-                    src: ['**.less'],
+                    src: ['**/*.less'],
                     dest: config.path.build.styles,
                     ext: '.css'
                 }]
@@ -131,8 +131,15 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: config.path.src.scripts,
-                    src: ['**.js'],
+                    src: ['**/*.js'],
                     dest: config.path.build.scripts,
+                    ext: '.js'
+                }, {
+                    expand: true,
+                    cwd: config.path.src.scripts.replace(config.project.name, '') + 'lib',
+                    src: ['**/*.js'],
+                    dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
+                    extDot: 'last',
                     ext: '.js'
                 }]
             },
@@ -143,8 +150,15 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: config.path.src.scripts,
-                    src: ['**.js'],
+                    src: ['**/*.js'],
                     dest: config.path.build.scripts,
+                    ext: '.js'
+                }, {
+                    expand: true,
+                    cwd: config.path.src.scripts.replace(config.project.name, '') + 'lib',
+                    src: ['**/*.js'],
+                    dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
+                    extDot: 'last',
                     ext: '.js'
                 }]
             }
@@ -206,7 +220,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: config.path.src.pages,
-                    src: ['**.html'],
+                    src: ['**/*.html'],
                     dest: config.path.build.pages,
                     ext: '.html'
                 }]

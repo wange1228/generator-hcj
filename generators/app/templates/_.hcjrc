@@ -1,4 +1,7 @@
 {
+    "project": {
+        "name": "<%= projectName %>"
+    },
     "server": {
         "pages": "<%= pagesSvr %>",
         "static": "<%= staticSvr %>",
