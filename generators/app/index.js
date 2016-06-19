@@ -151,6 +151,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                 type: 'input',
                 default: config.mobile.server.livereload
             },
+            /**
             {
                 when: function(response) {
                     return response.projectType === 'desktop';
@@ -173,6 +174,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
                     return config.mobile.path.src.base;
                 }
             },
+            **/
             {
                 when: function(response) {
                     return response.projectType === 'desktop';
