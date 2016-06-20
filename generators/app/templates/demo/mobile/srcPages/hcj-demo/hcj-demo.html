@@ -15,11 +15,15 @@
             baseUrl: "//<%= staticSvrHost %>/scripts/",
             paths: {
                 "zepto": "lib/zepto/zepto",
+                "md5": "lib/md5/md5",
                 "hcj-demo": "<%= projectName %>/hcj-demo"
             },
             shim: {
                 "zepto": {
                     exports: "$"
+                },
+                "hex_md5": {
+                    exports: "hex_md5"
                 }
             }
         });
