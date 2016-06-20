@@ -248,10 +248,12 @@ module.exports = function(grunt) {
         clean: {
             pages: config.path.build.pages,
             styles: config.path.build.styles,
-            scripts: config.path.build.scripts,
+            scripts: [
+                config.path.build.scripts,
+                config.path.build.scripts.replace(config.project.name, '') + 'lib',
+                config.path.build.scripts.replace(config.project.name, '') + 'common'
+            ],
             images: config.path.build.images,
-            lib: config.path.build.scripts.replace(config.project.name, '') + 'lib',
-            common: config.path.build.scripts.replace(config.project.name, '') + 'common',
             build: [
                 config.path.build.styles + '/*.{css,map}',
                 config.path.build.scripts + '/*.{js,map}',
