@@ -35,7 +35,7 @@ module.exports = {
                 host: 'mlc.vip.com'
             },
             static: {
-                path: 'financing-frontend-mobile-static/mobile',
+                path: 'financing-frontend-mobile-static',
                 host: 'mlc.vipstatic.com'
             },
             port: '80',

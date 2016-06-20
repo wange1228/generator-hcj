@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     include "../../pages/common/v2/metaHead.html"
-    <link rel="stylesheet" href="//<%= staticSvrHost %>/styles/<%= projectName %>/hcj-demo.css">
+    <link rel="stylesheet" href="//<%= staticSvrHost %>/mobile/styles/<%= projectName %>/hcj-demo.css">
     <title>HCJ DEMO</title>
 </head>
 <body>
     <h1>Hello HCJ</h1>
-    <img src="//<%= staticSvrHost %>/images/<%= projectName %>/apply.jpg" alt="">
+    <img src="//<%= staticSvrHost %>/mobile/images/<%= projectName %>/apply.jpg" alt="">
     <div class="apply"></div>
-    <script src="//<%= staticSvrHost %>/scripts/lib/requirejs/require.js" data-main="hcj-demo"></script>
+    <script src="//<%= staticSvrHost %>/mobile/scripts/lib/requirejs/require.js" data-main="hcj-demo"></script>
     <script type="text/javascript">
         requirejs.config({
-            baseUrl: "//<%= staticSvrHost %>/scripts/",
+            baseUrl: "//<%= staticSvrHost %>/mobile/scripts/",
             paths: {
                 "zepto": "lib/zepto/zepto",
                 "md5": "lib/md5/md5",
