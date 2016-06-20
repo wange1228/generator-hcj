@@ -372,6 +372,7 @@ var HCJGenerator = yeoman.generators.Base.extend({
         this.directory('demo/'+this.projectType+'/srcStyles/hcj-demo', this.srcStyles);
         this.directory('demo/'+this.projectType+'/srcScripts/hcj-demo', this.srcScripts);
         this.directory('demo/'+this.projectType+'/srcScripts/lib', config[this.projectType].path.src.scripts + '/lib');
+        this.directory('demo/'+this.projectType+'/srcScripts/common', config[this.projectType].path.src.scripts + '/common');
         this.directory('demo/'+this.projectType+'/srcImages/hcj-demo', this.srcImages);
 
         // 复制配置文件

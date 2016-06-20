@@ -1,4 +1,4 @@
-define('hcj-demo', ['zepto', 'md5'], function($) {
+define('hcj-demo', ['zepto', 'util-demo', 'md5'], function($, util) {
     function HcjDemo() {
         this.init();
     }
@@ -7,6 +7,7 @@ define('hcj-demo', ['zepto', 'md5'], function($) {
         init: function() {
             console.log($);
             console.log(hex_md5);
+            console.log(util.test);
         }
     };
 

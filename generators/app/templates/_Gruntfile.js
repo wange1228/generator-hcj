@@ -141,6 +141,13 @@ module.exports = function(grunt) {
                     dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
                     extDot: 'last',
                     ext: '.js'
+                }, {
+                    expand: true,
+                    cwd: config.path.src.scripts.replace(config.project.name, '') + 'common',
+                    src: ['**/*.js'],
+                    dest: config.path.build.scripts.replace(config.project.name, '') + 'common',
+                    extDot: 'last',
+                    ext: '.js'
                 }]
             },
             build: {
@@ -158,6 +165,13 @@ module.exports = function(grunt) {
                     cwd: config.path.src.scripts.replace(config.project.name, '') + 'lib',
                     src: ['**/*.js'],
                     dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
+                    extDot: 'last',
+                    ext: '.js'
+                }, {
+                    expand: true,
+                    cwd: config.path.src.scripts.replace(config.project.name, '') + 'common',
+                    src: ['**/*.js'],
+                    dest: config.path.build.scripts.replace(config.project.name, '') + 'common',
                     extDot: 'last',
                     ext: '.js'
                 }]
@@ -192,6 +206,13 @@ module.exports = function(grunt) {
                     dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
                     extDot: 'last',
                     ext: '.js'
+                }, {
+                    expand: true,
+                    cwd: config.path.build.scripts.replace(config.project.name, '') + 'common',
+                    src: ['**/*.js'],
+                    dest: config.path.build.scripts.replace(config.project.name, '') + 'common',
+                    extDot: 'last',
+                    ext: '.js'
                 }]
             }
         },
@@ -207,8 +228,8 @@ module.exports = function(grunt) {
                     pages: [
                         [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-]*\.css)', 'g'), 'replace styles in pages'],
                         [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages'],
-                        [new RegExp('(\/lib\/.*\/[a-zA-Z0-9\-]*\.js)', 'g'), 'replace scripts in pages'],
-                        [new RegExp(': *[\'\"](('+config.project.name+'|lib)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
+                        [new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-]*\.js)', 'g'), 'replace scripts in pages'],
+                        [new RegExp(': *[\'\"](('+config.project.name+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
                             var base = config.path.build.scripts.replace(config.project.name, '');
                             return grunt.filerev.summary[
                                 base + match + '.js'
@@ -229,7 +250,8 @@ module.exports = function(grunt) {
             styles: config.path.build.styles,
             scripts: config.path.build.scripts,
             images: config.path.build.images,
-            lib: config.path.build.scripts.replace(config.project.name, ''),
+            lib: config.path.build.scripts.replace(config.project.name, '') + 'lib',
+            common: config.path.build.scripts.replace(config.project.name, '') + 'common',
             build: [
                 config.path.build.styles + '/*.{css,map}',
                 config.path.build.scripts + '/*.{js,map}',
