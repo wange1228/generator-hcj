@@ -226,9 +226,9 @@ module.exports = function(grunt) {
                 ],
                 patterns: {
                     pages: [
-                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-]*\.css)', 'g'), 'replace styles in pages'],
-                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages'],
-                        [new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-]*\.js)', 'g'), 'replace scripts in pages'],
+                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages'],
+                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages'],
+                        [new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-_]*\.js)', 'g'), 'replace scripts in pages'],
                         [new RegExp(': *[\'\"](('+config.project.name+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
                             /**
                             var base = config.path.build.scripts.replace(config.project.name, '');
@@ -251,7 +251,7 @@ module.exports = function(grunt) {
                         }]
                     ],
                     styles: [
-                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']
+                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']
                     ]
                 }
             },
