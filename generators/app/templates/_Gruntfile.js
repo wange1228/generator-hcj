@@ -230,8 +230,22 @@ module.exports = function(grunt) {
                         [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages'],
                         [new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-]*\.js)', 'g'), 'replace scripts in pages'],
                         [new RegExp(': *[\'\"](('+config.project.name+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
+                            /**
                             var base = config.path.build.scripts.replace(config.project.name, '');
                             return grunt.filerev.summary[
+                                base + match + '.js'
+                            ].replace(base, '').replace('.js', '');
+                            **/
+                            var base = config.path.build.scripts.replace(config.project.name, '');
+                            var summary = {};
+
+                            for (var i in grunt.filerev.summary) {
+                                var key = i.replace(/\\/g, '/'),
+                                    val = grunt.filerev.summary[i].replace(/\\/g, '/');
+                                summary[key] = val;
+                            }
+
+                            return summary[
                                 base + match + '.js'
                             ].replace(base, '').replace('.js', '');
                         }]
