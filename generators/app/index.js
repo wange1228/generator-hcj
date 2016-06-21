@@ -375,6 +375,9 @@ var HCJGenerator = yeoman.generators.Base.extend({
         this.directory('demo/'+this.projectType+'/srcScripts/common', config[this.projectType].path.src.scripts + '/common');
         this.directory('demo/'+this.projectType+'/srcImages/hcj-demo', this.srcImages);
 
+        // 复制证书
+        this.directory('ssl', 'ssl');
+
         // 复制配置文件
         this.copy('_Gruntfile.js', 'Gruntfile.js');
         this.copy('_package.json', 'package.json');

@@ -7,7 +7,11 @@ module.exports = function(grunt) {
             options: {
                 port: config.server.port,
                 hostname: '127.0.0.1',
-                livereload: config.server.livereload
+                livereload: config.server.livereload,
+                protocol: 'https',
+                key: grunt.file.read('ssl/server.key').toString(),
+                cert: grunt.file.read('ssl/server.crt').toString(),
+                ca: grunt.file.read('ssl/ca.crt').toString()
             },
             src: {
                 options: {

@@ -9,7 +9,7 @@ module.exports = {
                 path: 'financing-static',
                 host: 'lc.vipstatic.com'
             },
-            port: '80',
+            port: '443',
             livereload: '35729'
         },
         path: {
@@ -38,7 +38,7 @@ module.exports = {
                 path: 'financing-frontend-mobile-static',
                 host: 'mlc.vipstatic.com'
             },
-            port: '80',
+            port: '443',
             livereload: '35729'
         },
         path: {
