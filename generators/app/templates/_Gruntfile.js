@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
     var config = grunt.file.readJSON('.hcjrc');
-
     grunt.initConfig({
         connect: {
             options: {
@@ -267,9 +266,9 @@ module.exports = function(grunt) {
             pages: config.path.build.pages,
             styles: config.path.build.styles,
             scripts: [
-                config.path.build.scripts,
-                config.path.build.scripts.replace(config.project.name, '') + 'lib',
-                config.path.build.scripts.replace(config.project.name, '') + 'common'
+                config.path.build.scripts
+                // config.path.build.scripts.replace(config.project.name, '') + 'lib',
+                // config.path.build.scripts.replace(config.project.name, '') + 'common'
             ],
             images: config.path.build.images,
             build: [
@@ -279,6 +278,10 @@ module.exports = function(grunt) {
                 '!'+config.path.build.styles+'/*.*.css',
                 '!'+config.path.build.scripts+'/*.*.js',
                 '!'+config.path.build.images+'/*.*.{png,jpg,gif,webp}'
+            ],
+            longversion: [
+                config.path.build.scripts.replace(config.project.name, '') + 'lib/**/*.*.*.**.{js,map}',
+                config.path.build.scripts.replace(config.project.name, '') + 'common/**/*.*.*.**.{js,map}'
             ]
         },
 
@@ -319,6 +322,7 @@ module.exports = function(grunt) {
         'filerev',
         'usemin',
         'clean:build',
+        'clean:longversion',
         'connect:build'
     ]);
 };

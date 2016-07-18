@@ -3,12 +3,12 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 var config = require('./config.js');
+var generators = yeoman.generators;
 
-var HCJGenerator = yeoman.generators.Base.extend({
+var HCJGenerator = generators.Base.extend({
     prompting: function () {
         var that = this;
         var done = this.async();
-
         this.log(yosay(
             '欢迎使用 ' + chalk.red('HCJ 前端开发工作流')
         ));
