@@ -2,7 +2,11 @@
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
-var config = require('./config.js');
+var fs = require('fs');
+var path = require('path');
+var _ = require('lodash');
+var cfg = require('./hcj-config/basic-conf.js');
+
 var generators = yeoman.generators;
 
 var HCJGenerator = generators.Base.extend({
@@ -12,7 +16,6 @@ var HCJGenerator = generators.Base.extend({
         this.log(yosay(
             '欢迎使用 ' + chalk.red('HCJ 前端开发工作流')
         ));
-
         this.log(chalk.green('=== 开始配置 ==='));
 
         var prompts = [
@@ -44,312 +47,10 @@ var HCJGenerator = generators.Base.extend({
                 ]
             },
             {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'pagesSvrPath',
-                message: '静态页面服务器路径：',
+                name: 'projectDesc',
+                message: '项目描述：',
                 type: 'input',
-                default: config.desktop.server.pages.path
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'pagesSvrPath',
-                message: '静态页面服务器路径：',
-                type: 'input',
-                default: config.mobile.server.pages.path
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'pagesSvrHost',
-                message: '静态页面域名：',
-                type: 'input',
-                default: config.desktop.server.pages.host
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'pagesSvrHost',
-                message: '静态页面域名：',
-                type: 'input',
-                default: config.mobile.server.pages.host
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'staticSvrPath',
-                message: '静态资源服务器路径：',
-                type: 'input',
-                default: config.desktop.server.static.path
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'staticSvrPath',
-                message: '静态资源服务器路径：',
-                type: 'input',
-                default: config.mobile.server.static.path
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'staticSvrHost',
-                message: '静态资源域名：',
-                type: 'input',
-                default: config.desktop.server.static.host
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'staticSvrHost',
-                message: '静态资源域名：',
-                type: 'input',
-                default: config.mobile.server.static.host
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'port',
-                message: '本地服务端口：',
-                type: 'input',
-                default: config.desktop.server.port
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'port',
-                message: '本地服务端口：',
-                type: 'input',
-                default: config.mobile.server.port
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'livereload',
-                message: 'livereload 端口：',
-                type: 'input',
-                default: config.desktop.server.livereload
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'livereload',
-                message: 'livereload 端口：',
-                type: 'input',
-                default: config.mobile.server.livereload
-            },
-            /**
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'srcBase',
-                message: 'Base 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.desktop.path.src.base;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'srcBase',
-                message: 'Base 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.mobile.path.src.base;
-                }
-            },
-            **/
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'srcPages',
-                message: 'HTML 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.desktop.path.src.pages + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'srcPages',
-                message: 'HTML 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.mobile.path.src.pages + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'srcStyles',
-                message: 'CSS 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.desktop.path.src.styles + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'srcStyles',
-                message: 'CSS 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.mobile.path.src.styles + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'srcScripts',
-                message: 'JavaScript 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.desktop.path.src.scripts + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'srcScripts',
-                message: 'JavaScript 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.mobile.path.src.scripts + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'srcImages',
-                message: 'Image 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.desktop.path.src.images + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'srcImages',
-                message: 'Image 开发路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.mobile.path.src.images + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'buildPages',
-                message: 'HTML 打包路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.desktop.path.build.pages + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'buildPages',
-                message: 'HTML 打包路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.mobile.path.build.pages + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'buildStyles',
-                message: 'CSS 打包路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.desktop.path.build.styles + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'buildStyles',
-                message: 'CSS 打包路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.mobile.path.build.styles + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'buildScripts',
-                message: 'JavaScript 打包路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.desktop.path.build.scripts + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'buildScripts',
-                message: 'JavaScript 打包路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.mobile.path.build.scripts + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'desktop';
-                },
-                name: 'buildImages',
-                message: 'Image 打包路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.desktop.path.build.images + '/' + response.projectName;
-                }
-            },
-            {
-                when: function(response) {
-                    return response.projectType === 'mobile';
-                },
-                name: 'buildImages',
-                message: 'Image 打包路径：',
-                type: 'input',
-                default: function(response) {
-                    return config.mobile.path.build.images + '/' + response.projectName;
-                }
+                default: ''
             }
         ];
 
@@ -359,22 +60,28 @@ var HCJGenerator = generators.Base.extend({
                     this[prop] = props[prop];
                 }
             }
-
+            this.createDate = this.getDate();
             this.log(chalk.green('=== 配置完成 ==='));
             done();
         }.bind(this));
     },
-
+    getDate: function() {
+        var date = new Date();
+        return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+    },
     writing: function() {
+        var project = this.projectType;
+        var from = path.join('demo', project);
+        var to = cfg[this.projectType].path.src;
+        
         // 复制模板文件
-        this.directory('demo/'+this.projectType+'/srcPages/hcj-demo', this.srcPages);
-        this.directory('demo/'+this.projectType+'/srcPages/common', config[this.projectType].path.src.pages + '/common');
-        this.directory('demo/'+this.projectType+'/srcStyles/hcj-demo', this.srcStyles);
-        this.directory('demo/'+this.projectType+'/srcScripts/hcj-demo', this.srcScripts);
-        this.directory('demo/'+this.projectType+'/srcScripts/lib', config[this.projectType].path.src.scripts + '/lib');
-        this.directory('demo/'+this.projectType+'/srcScripts/common', config[this.projectType].path.src.scripts + '/common');
-        this.directory('demo/'+this.projectType+'/srcImages/hcj-demo', this.srcImages);
+        this.directory(path.join(from, 'srcPages/hcj-demo'), path.join(to['pages'], this.projectName));
 
+        this.directory(path.join(from, 'srcStyles/hcj-demo'), path.join(to['styles'], this.projectName));
+        this.directory(path.join(from, 'srcScripts/hcj-demo'), path.join(to['scripts'], this.projectName));
+        this.directory(path.join(from, 'srcImages/hcj-demo'), path.join(to['images'], this.projectName));
+        this.directory('hcj-config', 'hcj-config');
+        
         // 复制证书
         this.directory('_ssl', 'ssl');
 

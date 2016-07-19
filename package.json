@@ -1,6 +1,6 @@
 {
   "name": "generator-hcj",
-  "version": "0.7.0",
+  "version": "0.8.1",
   "description": "HTML/CSS/JavaScript前端开发工作流，适用于互联网金融事业部开发环境",
   "license": "MIT",
   "author": {
@@ -27,6 +27,7 @@
     "chalk": "~0.4.0",
     "yeoman-generator": "~0.16.0",
     "yosay": "^1.1.1",
-    "lodash": "~4.13.1"
+    "lodash": "~4.13.1",
+    "path": "~0.12.7"
   }
 }

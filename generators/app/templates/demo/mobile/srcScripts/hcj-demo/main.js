@@ -1,8 +1,14 @@
-define('hcj-demo', ['zepto', 'util-demo', 'md5'], function($, util) {
+/**
+ * @author <%= authorName %>
+ * @description <%= projectDesc %>
+ * @date <%= createDate %>
+ */
+
+define(['zepto', 'util-demo', 'md5'], function($, util) {
     function HcjDemo() {
         this.init();
     }
-
+    
     HcjDemo.prototype = {
         init: function() {
             console.log($);
