@@ -13,13 +13,17 @@ var cfg = {
     mobile: {
         devRoot: 'financing-frontend-mobile-develop',
         serverRoot: 'financing-mobile',
-        distRoot: 'financing-frontend-mobile-static',
+        distRoot: 'financing-frontend-mobile-static/mobile',
         host: {
             server: 'mlc.vip.com',
             statics: 'mlc.vipstatic.com'
         }
     },
-    statics: 'financing-static'
+    statics: 'financing-static',
+    server: {
+        port: '443',
+        livereload: '35729'
+    }
 }
 
 module.exports = {
@@ -33,9 +37,7 @@ module.exports = {
             statics: {
                 path: cfg.statics,
                 host: cfg.desktop.host.statics
-            },
-            port: '443',
-            livereload: '35729'
+            }
         },
         path: {
             src: {
@@ -46,8 +48,8 @@ module.exports = {
             },
             build: {
                 pages: path.join(cfg.desktop.serverRoot, 'financing-desktop-webapp/src/main/resources/ftl'),
-                styles: path.join(cfg.desktop.distRoot, 'styles'),
-                scripts: path.join(cfg.desktop.distRoot, 'scripts'),
+                styles: path.join(cfg.desktop.distRoot, 'style'),
+                scripts: path.join(cfg.desktop.distRoot, 'js'),
                 images: path.join(cfg.desktop.distRoot, 'images'),
             }
         }
@@ -61,9 +63,7 @@ module.exports = {
             statics: {
                 path: cfg.statics,
                 host: cfg.mobile.host.statics
-            },
-            port: '443',
-            livereload: '35729'
+            }
         },
         path: {
             src: {
