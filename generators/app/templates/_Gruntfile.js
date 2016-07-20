@@ -86,7 +86,7 @@ module.exports = function(grunt) {
         map.filerev.push({
             expand: true,
             cwd: distJs + '/lib',
-            src: ['**/*.js', '!**/*.**.*.js'],
+            src: ['**/*.js', '!**/*.**.js'],
             dest: distJs + '/lib',
             extDot: 'last',
             ext: '.js'
@@ -94,7 +94,7 @@ module.exports = function(grunt) {
         map.filerev.push({
             expand: true,
             cwd: distJs + '/common',
-            src: ['**/*.js', '!**/*.**.*.js'],
+            src: ['**/*.js', '!**/*.**.js'],
             dest: distJs + '/common',
             extDot: 'last',
             ext: '.js'
