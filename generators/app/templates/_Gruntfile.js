@@ -103,7 +103,8 @@ module.exports = function(grunt) {
         //清除多余公用文件
         map.cleanF.longversion = [
             distJs + '/lib/**/*.*.*.**.{js,map}',
-            distJs + '/common/**/*.*.*.**.{js,map}'
+            distJs + '/common/**/*.*.*.**.{js,map}',
+            '!'+distJs+'/common/HybridJSBridge/VH**.js'
         ];
         
         if(!isSingleProject){
@@ -241,15 +242,21 @@ module.exports = function(grunt) {
                     var key = i.replace(/\\/g, '/');
                     
                     var val = grunt.filerev.summary[i].replace(/\\/g, '/');
+                    
                     if(key.indexOf('.js') !== -1){
                         summary[key] = val;
                     }
                     
                 }
-                console.log(match)
-                var result = summary[
+                var result;
+                var mapFile = summary[
                     base + match + '.js'
-                ].replace(base, '').replace('.js', '');
+                ];
+                if(mapFile){
+                    result = mapFile.replace(base, '').replace('.js', '');
+                }else{
+                    result = match;
+                }
 
                 return result;
             }]);
