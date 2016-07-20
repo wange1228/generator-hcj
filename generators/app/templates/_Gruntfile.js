@@ -82,6 +82,24 @@ module.exports = function(grunt) {
             build: []
         };
 
+        //后续单独打包，不跟随项目
+        map.filerev.push({
+            expand: true,
+            cwd: distJs + '/lib',
+            src: ['**/*.js', '!**/*.**.*.js'],
+            dest: distJs + '/lib',
+            extDot: 'last',
+            ext: '.js'
+        });
+        map.filerev.push({
+            expand: true,
+            cwd: distJs + '/common',
+            src: ['**/*.js', '!**/*.**.*.js'],
+            dest: distJs + '/common',
+            extDot: 'last',
+            ext: '.js'
+        });
+
         //清除多余公用文件
         map.cleanF.longversion = [
             distJs + '/lib/**/*.*.*.**.{js,map}',
@@ -105,22 +123,7 @@ module.exports = function(grunt) {
                 extDot: 'last',
                 ext: '.js'
             });
-            map.filerev.push({
-                expand: true,
-                cwd: distJs + '/lib',
-                src: ['**/*.js', '!**/*.**.*.js'],
-                dest: distJs + '/lib',
-                extDot: 'last',
-                ext: '.js'
-            });
-            map.filerev.push({
-                expand: true,
-                cwd: distJs + '/common',
-                src: ['**/*.js', '!**/*.**.*.js'],
-                dest: distJs + '/common',
-                extDot: 'last',
-                ext: '.js'
-            });
+            
             
         }
 
@@ -196,12 +199,14 @@ module.exports = function(grunt) {
             fileMap.cleanF.scripts.push(distJs);
             fileMap.cleanF.images.push(distImg);
             
+            var htmlExt = env == 'desktop' ? '.ftl' : '.html';
+            
             fileMap.htmlminF.push({
                 expand: true,
                 cwd: distPage,
-                src: ['**/*.html'],
+                src: ['**/*'+htmlExt],
                 dest: distPage,
-                ext: '.html'
+                ext: htmlExt
             });
             
             fileMap.includeF[project] = {
@@ -211,21 +216,24 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: srcPage,
-                    src: ['**/*.html'],
+                    src: ['**/*'+htmlExt],
                     dest: distPage,
-                    ext: '.html'
+                    ext: htmlExt
                 }]
             };
             
-            fileMap.useminF.pages.push(distPage + '/**.html');
+            fileMap.useminF.pages.push(distPage + '/**'+htmlExt);
             fileMap.useminF.styles.push(distCss + '/**.css');
-            fileMap.useminF.options.patterns.pages.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages']);
-            fileMap.useminF.options.patterns.pages.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages']);
-            fileMap.useminF.options.patterns.pages.push([new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-_]*\.js)', 'g'), 'replace scripts in pages']);
+            var _pages = fileMap.useminF.options.patterns.pages;
+            _pages.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages']);
+            _pages.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages']);
+            _pages.push([new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-_]*\.js)', 'g'), 'replace scripts in pages']);
             fileMap.useminF.options.patterns.pages.push([new RegExp(': *[\'\"](('+project+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
 
                 var base = distJs.replace(project, '');
+                
                 base = base.replace(/\\/g, '/');
+
                 var summary = {};
 
                 for (var i in grunt.filerev.summary) {
@@ -233,21 +241,25 @@ module.exports = function(grunt) {
                     var key = i.replace(/\\/g, '/');
                     
                     var val = grunt.filerev.summary[i].replace(/\\/g, '/');
-                        
-                    summary[key] = val;
+                    if(key.indexOf('.js') !== -1){
+                        summary[key] = val;
+                    }
+                    
                 }
-
+                console.log(match)
                 var result = summary[
                     base + match + '.js'
                 ].replace(base, '').replace('.js', '');
+
                 return result;
             }]);
+            fileMap.useminF.options.patterns.styles.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']);
             fileMap.useminF.options.assetsDirs.push(distJs.replace(project, ''));
             fileMap.useminF.options.assetsDirs.push(distCss.replace(project, ''));
             fileMap.useminF.options.assetsDirs.push(distImg.replace(project, ''));
 
         });
-        console.log(fileMap.includeF)
+        
         return p;
     }
 
@@ -451,8 +463,17 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build:all', buildTasks);
 
-    if(isSingleProject){
-        grunt.registerTask(task.join(':'), buildTasks);
+    var isInProject = false;
+    var _task = task.join(':');
+    _projects.forEach(function(o, i){
+        if(_task === 'build:' + o){
+            isInProject = true;
+        }
+    });
+    if(isSingleProject && isInProject){
+        grunt.registerTask(_task, buildTasks);
+    }else{
+        console.error('命令无效');
     }
     
 };

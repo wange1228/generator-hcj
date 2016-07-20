@@ -22,6 +22,7 @@ var HCJGenerator = generators.Base.extend({
         this.log(chalk.green('=== 添加项目 ==='));
         this.createDate = this._getDate();
         this.authorName = this.user.git.username + ' ' + '<' + this.user.git.email + '>';
+
         var prompts = [
             {
                 name: 'projectType',
@@ -57,7 +58,7 @@ var HCJGenerator = generators.Base.extend({
                     this[prop] = props[prop];
                 }
             }
-            console.log(this.projectName)
+            this.staticSvrHost = cfg.basic[this.projectType].host.statics;
             done();
         }.bind(this));
     },
@@ -81,6 +82,7 @@ var HCJGenerator = generators.Base.extend({
             }else{
                 data.push(projectName)
                 data = JSON.stringify(data);
+                data = data.replace(/,/g, ',\n\r').replace(/\[/g, '\[\n\r').replace(/\]/g, '\n\r\]').replace(/(".*?")/g, '    $1');
                 fs.writeFile(projectConf, data, function (err) {
                     if (err) throw err;
                     // 复制模板文件
