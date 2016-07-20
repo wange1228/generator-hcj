@@ -1,6 +1,6 @@
 {
-  "name": "<%= projectName %>",
-  "author": "<%= authorName %>",
+  "name": "hcj-project",
+  "author": "frontend-developer",
   "private": true,
   "devDependencies": {
     "connect-livereload": "^0.5.4",

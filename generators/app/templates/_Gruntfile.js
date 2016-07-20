@@ -1,305 +1,442 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
+    var path = require('path');
+    //配置文件
     var config = grunt.file.readJSON('.hcjrc');
-    grunt.initConfig({
-        connect: {
-            options: {
-                port: config.server.port,
-                hostname: '127.0.0.1',
-                livereload: config.server.livereload,
-                protocol: 'https',
-                key: grunt.file.read('ssl/server.key').toString(),
-                cert: grunt.file.read('ssl/server.crt').toString(),
-                ca: grunt.file.read('ssl/ca.crt').toString()
-            },
-            src: {
-                options: {
-                    base: [
-                        config.server.pages.path,
-                        config.server.static.path,
-                        './'
-                    ]
-                }
-            },
-            build: {
-                options: {
-                    keepalive: true,
-                    livereload: false,
-                    base: [
-                        config.server.pages.path,
-                        config.server.static.path,
-                        './'
-                    ]
-                }
-            }
-        },
+    var conf = require('./hcj-config/basic-conf.js');
+    var projects = grunt.file.readJSON('./hcj-config/projects-conf.js');
 
-        watch: {
-            pages: {
-                files: [config.path.src.pages + '/**.html'],
-                tasks: ['clean:pages', 'includes'],
-                options: {
-                    livereload: config.server.livereload
-                }
-            },
-            styles: {
-                files: [config.path.src.styles + '/**.less'],
-                tasks: ['clean:styles', 'less:dev'],
-                options: {
-                    livereload: config.server.livereload
-                }
-            },
-            scripts: {
-                files: [config.path.src.scripts + '/**.js'],
-                tasks: ['clean:scripts', 'uglify:dev'],
-                options: {
-                    livereload: config.server.livereload
-                }
-            },
-            images: {
-                files: [config.path.src.images + '/**.*'],
-                tasks: ['clean:images', 'copy:images'],
-                options: {
-                    livereload: config.server.livereload
-                }
-            }
-        },
+    //指定项目相关配置
+    var _projects = projects.slice();
+    var fileMap = {};
+    var task = '';
+    var isSingleProject = false;
+    try{
+        task = grunt.cli.tasks[0];
+        task = task.split(':');
+        //设置项目
+        isSingleProject = task.length > 2 ? true : false; 
 
-        copy: {
-            images: {
-                files: [{
-                    expand: true,
-                    cwd: config.path.src.images,
-                    src: '**',
-                    dest: config.path.build.images,
-                    filter: 'isFile'
-                }]
-            }
-        },
+    }catch(e){
+        throw e;
+    }
 
-        htmlmin: {
-            build: {
-                options: {
-                    removeComments: true,
-                    collapseWhitespace: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: config.path.build.pages,
-                    src: ['**/*.html'],
-                    dest: config.path.build.pages,
-                    ext: '.html'
-                }]
-            }
-        },
+    function setFileMap(map){
+        var srcJs = conf.mobile.path.src.scripts;
+        var distJs = conf.mobile.path.build.scripts;
+        var srcImg = conf.mobile.path.src.images;
+        var distImg = conf.mobile.path.build.images;
+        var srcCss = conf.mobile.path.src.styles;
+        var distCss = conf.mobile.path.build.styles;
 
-        less: {
-            dev: {
-                options: {
-                    sourceMapRootpath: '/',
-                    sourceMap: true,
-                    sourceMapFileInline: true,
-                    paths: config.server.static.path,
-                    compress: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: config.path.src.styles,
-                    src: ['**/*.less'],
-                    dest: config.path.build.styles,
-                    ext: '.css'
-                }]
-            },
-            build: {
-                options: {
-                    paths: config.server.static.path,
-                    compress: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: config.path.src.styles,
-                    src: ['**/*.less'],
-                    dest: config.path.build.styles,
-                    ext: '.css'
-                }]
-            }
-        },
-
-        uglify: {
-            dev: {
-                options: {
-                    mangle: true,
-                    sourceMap: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: config.path.src.scripts,
-                    src: ['**/*.js'],
-                    dest: config.path.build.scripts,
-                    ext: '.js'
-                }, {
-                    expand: true,
-                    cwd: config.path.src.scripts.replace(config.project.name, '') + 'lib',
-                    src: ['**/*.js'],
-                    dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
-                    extDot: 'last',
-                    ext: '.js'
-                }, {
-                    expand: true,
-                    cwd: config.path.src.scripts.replace(config.project.name, '') + 'common',
-                    src: ['**/*.js'],
-                    dest: config.path.build.scripts.replace(config.project.name, '') + 'common',
-                    extDot: 'last',
-                    ext: '.js'
-                }]
-            },
-            build: {
-                options: {
-                    mangle: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: config.path.src.scripts,
-                    src: ['**/*.js'],
-                    dest: config.path.build.scripts,
-                    ext: '.js'
-                }, {
-                    expand: true,
-                    cwd: config.path.src.scripts.replace(config.project.name, '') + 'lib',
-                    src: ['**/*.js'],
-                    dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
-                    extDot: 'last',
-                    ext: '.js'
-                }, {
-                    expand: true,
-                    cwd: config.path.src.scripts.replace(config.project.name, '') + 'common',
-                    src: ['**/*.js'],
-                    dest: config.path.build.scripts.replace(config.project.name, '') + 'common',
-                    extDot: 'last',
-                    ext: '.js'
-                }]
-            }
-        },
-
-        filerev: {
-            options: {
-                algorithm: 'md5',
-                length: 7
-            },
-            static: {
-                files: [{
-                    expand: true,
-                    cwd: config.path.build.styles,
-                    src: ['*.css'],
-                    dest: config.path.build.styles
-                },{
-                    expand: true,
-                    cwd: config.path.build.scripts,
-                    src: ['*.js'],
-                    dest: config.path.build.scripts
-                },{
-                    expand: true,
-                    cwd: config.path.build.images,
-                    src: ['*.{png,jpg,gif,webp}'],
-                    dest: config.path.build.images
-                }, {
-                    expand: true,
-                    cwd: config.path.build.scripts.replace(config.project.name, '') + 'lib',
-                    src: ['**/*.js'],
-                    dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
-                    extDot: 'last',
-                    ext: '.js'
-                }, {
-                    expand: true,
-                    cwd: config.path.build.scripts.replace(config.project.name, '') + 'common',
-                    src: ['**/*.js'],
-                    dest: config.path.build.scripts.replace(config.project.name, '') + 'common',
-                    extDot: 'last',
-                    ext: '.js'
-                }]
-            }
-        },
-
-        usemin: {
+        map.copyImagesF = [];
+        map.lessBuildF = [];
+        map.uglifyF = [];
+        map.filerev = [];
+        map.htmlminF = [];
+        map.includeF = {};
+        map.useminF = {
             options: {
                 assetsDirs: [
-                    config.path.build.styles.replace(config.project.name, ''),
-                    config.path.build.scripts.replace(config.project.name, ''),
-                    config.path.build.images.replace(config.project.name, '')
+                    // config.path.build.styles.replace(config.project.name, ''),
+                    // config.path.build.scripts.replace(config.project.name, ''),
+                    // config.path.build.images.replace(config.project.name, '')
                 ],
                 patterns: {
                     pages: [
-                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages'],
-                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages'],
-                        [new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-_]*\.js)', 'g'), 'replace scripts in pages'],
-                        [new RegExp(': *[\'\"](('+config.project.name+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
-                            /**
-                            var base = config.path.build.scripts.replace(config.project.name, '');
-                            return grunt.filerev.summary[
-                                base + match + '.js'
-                            ].replace(base, '').replace('.js', '');
-                            **/
-                            var base = config.path.build.scripts.replace(config.project.name, '');
-                            var summary = {};
+                        // [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages'],
+                        // [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages'],
+                        // [new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-_]*\.js)', 'g'), 'replace scripts in pages'],
+                        // [new RegExp(': *[\'\"](('+config.project.name+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
+                            
+                        //     var base = config.path.build.scripts.replace(config.project.name, '');
+                        //     var summary = {};
 
-                            for (var i in grunt.filerev.summary) {
-                                var key = i.replace(/\\/g, '/'),
-                                    val = grunt.filerev.summary[i].replace(/\\/g, '/');
-                                summary[key] = val;
-                            }
+                        //     for (var i in grunt.filerev.summary) {
+                        //         var key = i.replace(/\\/g, '/'),
+                        //             val = grunt.filerev.summary[i].replace(/\\/g, '/');
+                        //         summary[key] = val;
+                        //     }
 
-                            return summary[
-                                base + match + '.js'
-                            ].replace(base, '').replace('.js', '');
-                        }]
+                        //     return summary[
+                        //         base + match + '.js'
+                        //     ].replace(base, '').replace('.js', '');
+                        // }]
                     ],
                     styles: [
-                        [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']
+                        // [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']
                     ]
                 }
             },
-            pages: config.path.build.pages + '/**.html',
-            styles: config.path.build.styles + '/**.css'
-        },
+            pages: [],
+            styles: []
+            // pages: config.path.build.pages + '/**.html',
+            // styles: config.path.build.styles + '/**.css'
+        };
 
-        clean: {
-            pages: config.path.build.pages,
-            styles: config.path.build.styles,
-            scripts: [
-                config.path.build.scripts
-                // config.path.build.scripts.replace(config.project.name, '') + 'lib',
-                // config.path.build.scripts.replace(config.project.name, '') + 'common'
-            ],
-            images: config.path.build.images,
-            build: [
-                config.path.build.styles + '/*.{css,map}',
-                config.path.build.scripts + '/*.{js,map}',
-                config.path.build.images + '/*.{png,jpg,gif,webp}',
-                '!'+config.path.build.styles+'/*.*.css',
-                '!'+config.path.build.scripts+'/*.*.js',
-                '!'+config.path.build.images+'/*.*.{png,jpg,gif,webp}'
-            ],
-            longversion: [
-                config.path.build.scripts.replace(config.project.name, '') + 'lib/**/*.*.*.**.{js,map}',
-                config.path.build.scripts.replace(config.project.name, '') + 'common/**/*.*.*.**.{js,map}'
-            ]
-        },
+        map.cleanF = {
+            pages: [],
+            styles: [],
+            scripts: [],
+            images: [],
+            build: []
+        };
 
-        includes: {
-            default: {
+        //后续单独打包，不跟随项目
+        map.filerev.push({
+            expand: true,
+            cwd: distJs + '/lib',
+            src: ['**/*.js', '!**/*.**.*.js'],
+            dest: distJs + '/lib',
+            extDot: 'last',
+            ext: '.js'
+        });
+        map.filerev.push({
+            expand: true,
+            cwd: distJs + '/common',
+            src: ['**/*.js', '!**/*.**.*.js'],
+            dest: distJs + '/common',
+            extDot: 'last',
+            ext: '.js'
+        });
+
+        //清除多余公用文件
+        map.cleanF.longversion = [
+            distJs + '/lib/**/*.*.*.**.{js,map}',
+            distJs + '/common/**/*.*.*.**.{js,map}'
+        ];
+        
+        if(!isSingleProject){
+            map.uglifyF.push({
+                expand: true,
+                cwd: srcJs + '/common',
+                src: ['**/*.js'],
+                dest: distJs + '/common',
+                extDot: 'last',
+                ext: '.js'
+            });
+            map.uglifyF.push({
+                expand: true,
+                cwd: srcJs + '/lib',
+                src: ['**/*.js'],
+                dest: distJs + '/lib',
+                extDot: 'last',
+                ext: '.js'
+            });
+            
+            
+        }
+
+        
+    }
+
+    /**
+     * [获取当前项目]
+     */
+    function getProjects(){
+        var p = _projects;
+
+        //选择某个项目
+        if(isSingleProject){
+            p = task.slice(1).join(':');
+            p = [p];
+        }
+        
+        p.forEach(function(o, i){
+            var env = o.split(':')[0];
+            var project = o.split(':')[1];
+            var cwd = conf[env].path;
+            var srcImg = path.join(cwd.src.images, project);
+            var distImg = path.join(cwd.build.images, project);
+            var srcCss = path.join(cwd.src.styles, project);
+            var distCss = path.join(cwd.build.styles, project);
+            var srcJs = path.join(cwd.src.scripts, project);
+            var distJs = path.join(cwd.build.scripts, project);
+            var srcPage = path.join(cwd.src.pages, project);
+            var distPage = path.join(cwd.build.pages, project);
+            fileMap.copyImagesF.push({
+                expand: true,
+                cwd: srcImg,
+                src: '**',
+                dest: distImg,
+                filter: 'isFile'
+            });
+            fileMap.lessBuildF.push({
+                expand: true,
+                cwd: srcCss,
+                src: ['**/*.less'],
+                dest: distCss,
+                ext: '.css'
+            });
+            fileMap.uglifyF.push({
+                expand: true,
+                cwd: srcJs,
+                src: ['**/*.js'],
+                dest: distJs,
+                ext: '.js'
+            });
+            fileMap.filerev.push({
+                expand: true,
+                cwd: distCss,
+                src: ['*.css'],
+                dest: distCss,
+            });
+            fileMap.filerev.push({
+                expand: true,
+                cwd: distJs,
+                src: ['*.js'],
+                dest: distJs
+            });
+            fileMap.filerev.push({
+                expand: true,
+                cwd: distImg,
+                src: ['*.{png,jpg,gif,webp}'],
+                dest: distImg
+            });
+
+            fileMap.cleanF.pages.push(distPage);
+            fileMap.cleanF.styles.push(distCss);
+            fileMap.cleanF.scripts.push(distJs);
+            fileMap.cleanF.images.push(distImg);
+            
+            var htmlExt = env == 'desktop' ? '.ftl' : '.html';
+            
+            fileMap.htmlminF.push({
+                expand: true,
+                cwd: distPage,
+                src: ['**/*'+htmlExt],
+                dest: distPage,
+                ext: htmlExt
+            });
+            
+            fileMap.includeF[project] = {
                 options: {
-                    includePath: config.path.src.pages
+                    includePath: srcPage
                 },
                 files: [{
                     expand: true,
-                    cwd: config.path.src.pages,
-                    src: ['**/*.html'],
-                    dest: config.path.build.pages,
-                    ext: '.html'
+                    cwd: srcPage,
+                    src: ['**/*'+htmlExt],
+                    dest: distPage,
+                    ext: htmlExt
                 }]
-            }
-        }
-    });
+            };
+            
+            fileMap.useminF.pages.push(distPage + '/**'+htmlExt);
+            fileMap.useminF.styles.push(distCss + '/**.css');
+            var _pages = fileMap.useminF.options.patterns.pages;
+            _pages.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages']);
+            _pages.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages']);
+            _pages.push([new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-_]*\.js)', 'g'), 'replace scripts in pages']);
+            fileMap.useminF.options.patterns.pages.push([new RegExp(': *[\'\"](('+project+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
+
+                var base = distJs.replace(project, '');
+                
+                base = base.replace(/\\/g, '/');
+
+                var summary = {};
+
+                for (var i in grunt.filerev.summary) {
+
+                    var key = i.replace(/\\/g, '/');
+                    
+                    var val = grunt.filerev.summary[i].replace(/\\/g, '/');
+                    if(key.indexOf('.js') !== -1){
+                        summary[key] = val;
+                    }
+                    
+                }
+                console.log(match)
+                var result = summary[
+                    base + match + '.js'
+                ].replace(base, '').replace('.js', '');
+
+                return result;
+            }]);
+            fileMap.useminF.options.patterns.styles.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']);
+            fileMap.useminF.options.assetsDirs.push(distJs.replace(project, ''));
+            fileMap.useminF.options.assetsDirs.push(distCss.replace(project, ''));
+            fileMap.useminF.options.assetsDirs.push(distImg.replace(project, ''));
+
+        });
+        
+        return p;
+    }
+
+
+    /**
+     * [初始化grunt配置]
+     */
+    function init(){
+        
+        grunt.initConfig({
+            connect: {
+                options: {
+                    port: conf.basic.server.port,
+                    hostname: '127.0.0.1',
+                    livereload: conf.basic.server.livereload,
+                    protocol: 'https',
+                    key: grunt.file.read('ssl/server.key').toString(),
+                    cert: grunt.file.read('ssl/server.crt').toString(),
+                    ca: grunt.file.read('ssl/ca.crt').toString()
+                },
+                src: {
+                    options: {
+                        base: [
+                            conf.desktop.server.pages.path,
+                            conf.mobile.server.pages.path,
+                            conf.desktop.server.statics.path,
+                            conf.mobile.server.statics.path,
+                            './'
+                        ]
+                    }
+                },
+                build: {
+                    options: {
+                        keepalive: true,
+                        livereload: false,
+                        base: [
+                            conf.desktop.server.pages.path,
+                            conf.mobile.server.pages.path,
+                            conf.desktop.server.statics.path,
+                            conf.mobile.server.statics.path,
+                            './'
+                        ]
+                    }
+                }
+            },
+
+            // watch: {
+            //     pages: {
+            //         files: [config.path.src.pages + '/**.html'],
+            //         tasks: ['clean:pages', 'includes'],
+            //         options: {
+            //             livereload: config.server.livereload
+            //         }
+            //     },
+            //     styles: {
+            //         files: [config.path.src.styles + '/**.less'],
+            //         tasks: ['clean:styles', 'less:dev'],
+            //         options: {
+            //             livereload: config.server.livereload
+            //         }
+            //     },
+            //     scripts: {
+            //         files: [config.path.src.scripts + '/**.js'],
+            //         tasks: ['clean:scripts', 'uglify:dev'],
+            //         options: {
+            //             livereload: config.server.livereload
+            //         }
+            //     },
+            //     images: {
+            //         files: [config.path.src.images + '/**.*'],
+            //         tasks: ['clean:images', 'copy:images'],
+            //         options: {
+            //             livereload: config.server.livereload
+            //         }
+            //     }
+            // },
+
+            copy: {
+                images: {
+                    files: fileMap.copyImagesF
+                }
+            },
+
+            htmlmin: {
+                build: {
+                    options: {
+                        removeComments: true,
+                        collapseWhitespace: true
+                    },
+                    files: fileMap.htmlminF
+                }
+            },
+
+            less: {
+                // dev: {
+                //     options: {
+                //         sourceMapRootpath: '/',
+                //         sourceMap: true,
+                //         sourceMapFileInline: true,
+                //         paths: config.server.static.path,
+                //         compress: true
+                //     },
+                //     files: [{
+                //         expand: true,
+                //         cwd: config.path.src.styles,
+                //         src: ['**/*.less'],
+                //         dest: config.path.build.styles,
+                //         ext: '.css'
+                //     }]
+                // },
+                build: {
+                    options: {
+                        // paths: config.server.static.path,
+                        compress: true
+                    },
+                    files: fileMap.lessBuildF
+                }
+            },
+
+            uglify: {
+                // dev: {
+                //     options: {
+                //         mangle: true,
+                //         sourceMap: true
+                //     },
+                //     files: [{
+                //         expand: true,
+                //         cwd: config.path.src.scripts,
+                //         src: ['**/*.js'],
+                //         dest: config.path.build.scripts,
+                //         ext: '.js'
+                //     }, {
+                //         expand: true,
+                //         cwd: config.path.src.scripts.replace(config.project.name, '') + 'lib',
+                //         src: ['**/*.js'],
+                //         dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
+                //         extDot: 'last',
+                //         ext: '.js'
+                //     }, {
+                //         expand: true,
+                //         cwd: config.path.src.scripts.replace(config.project.name, '') + 'common',
+                //         src: ['**/*.js'],
+                //         dest: config.path.build.scripts.replace(config.project.name, '') + 'common',
+                //         extDot: 'last',
+                //         ext: '.js'
+                //     }]
+                // },
+                build: {
+                    options: {
+                        mangle: true
+                    },
+                    files: fileMap.uglifyF
+                }
+            },
+
+            filerev: {
+                options: {
+                    algorithm: 'md5',
+                    length: 7
+                },
+                build: {
+                    files: fileMap.filerev
+                }
+            },
+
+            usemin: fileMap.useminF,
+            clean: fileMap.cleanF,
+
+            includes: fileMap.includeF
+        });
+    }
+
+    setFileMap(fileMap);
+
+    getProjects();
+
+    init();
 
     grunt.registerTask('dev', [
         'clean',
@@ -312,7 +449,7 @@ module.exports = function(grunt) {
     ]);
 
 
-    grunt.registerTask('build', [
+    var buildTasks = [
         'clean',
         'includes',
         'htmlmin',
@@ -321,8 +458,22 @@ module.exports = function(grunt) {
         'copy:images',
         'filerev',
         'usemin',
-        'clean:build',
-        'clean:longversion',
-        'connect:build'
-    ]);
+        // 'connect:build'
+    ];
+
+    grunt.registerTask('build:all', buildTasks);
+
+    var isInProject = false;
+    var _task = task.join(':');
+    _projects.forEach(function(o, i){
+        if(_task === 'build:' + o){
+            isInProject = true;
+        }
+    });
+    if(isSingleProject && isInProject){
+        grunt.registerTask(_task, buildTasks);
+    }else{
+        console.error('命令无效');
+    }
+    
 };
