@@ -96,20 +96,14 @@ module.exports = function(grunt) {
        
         //build状态下需要打包common，lib
         if(!isDev){
-            
-            map.uglifyF.push({
-                expand: true,
-                cwd: srcJs + '/common',
-                src: ['**/*.js'],
-                dest: '.tmpjs/'+distJs+'/common'
-            });
-            map.uglifyF.push({
-                expand: true,
-                cwd: srcJs + '/lib',
-                src: ['**/*.js'],
-                dest: '.tmpjs/'+distJs+'/lib'
-            });
-
+            // 压缩移动端m.js，请勿颠倒次序！
+            var libjs = [
+                srcJs + '/lib/underscore/underscore.js', 
+                srcJs + '/lib/zepto/zepto.js', 
+                srcJs + '/lib/template/doT.js',
+                srcJs + '/lib/backbone/backbone.js', 
+                srcJs + '/lib/requirejs/require.js'
+            ];
             if(!isSingleProject){
                 map.uglifyF.push({
                     expand: true,
@@ -127,23 +121,31 @@ module.exports = function(grunt) {
                     extDot: 'last',
                     ext: '.js'
                 });
-                // 压缩移动端m.js，请勿颠倒次序！
-                var libjs = [
-                    srcJs + '/lib/underscore/underscore.js', 
-                    srcJs + '/lib/zepto/zepto.js', 
-                    srcJs + '/lib/template/doT.js',
-                    srcJs + '/lib/backbone/backbone.js', 
-                    srcJs + '/lib/requirejs/require.js'
-                ];
+                
                 map.uglifyF.push({
                     src: libjs,
                     dest: distJs + '/lib/m.js'
                 });
-                map.uglifyF.push({
-                    src: libjs,
-                    dest: '.tmpjs/'+distJs+'/lib/m.js'
-                })
+                
             }
+
+            //放到临时目录
+            map.uglifyF.push({
+                expand: true,
+                cwd: srcJs + '/common',
+                src: ['**/*.js'],
+                dest: '.tmpjs/'+distJs+'/common'
+            });
+            map.uglifyF.push({
+                expand: true,
+                cwd: srcJs + '/lib',
+                src: ['**/*.js'],
+                dest: '.tmpjs/'+distJs+'/lib'
+            });
+            map.uglifyF.push({
+                src: libjs,
+                dest: '.tmpjs/'+distJs+'/lib/m.js'
+            });
 
             //后续单独打包，不跟随项目
             map.filerev.push({
@@ -306,10 +308,10 @@ module.exports = function(grunt) {
             _pages.push([new RegExp('(\/'+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages']);
             _pages.push([new RegExp('(\/'+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages']);
             _pages.push([new RegExp('[\'\"][^\'\"]*(('+_project+'|lib|common)\/[^\'\"]*\)\.js[\'\"]', 'g'), 'replace scripts in pages', function(match){
-                return getVersionFile(distJs, project, match);
+                return getVersionFile(distJs, project, page, match);
             }]);
             _pages.push([new RegExp(': *[\'\"](('+_project+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
-                return getVersionFile(distJs, project, match);
+                return getVersionFile(distJs, project, page, match);
             }]);
             fileMap.useminF.options.patterns.styles.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']);
             _assetsDirs.push(distJs.replace(project, ''));
@@ -356,11 +358,12 @@ module.exports = function(grunt) {
     }
 
 
-    function getVersionFile(distJs, project, match){
-        var base = distJs.replace(project, '');
+    function getVersionFile(distJs, project, page, match){
+
+        var base = distJs.replace(page ? (project + '/' + page) : project, '');
                 
         var summary = {};
-        // console.log(match)
+        
         for (var i in grunt.filerev.summary) {
 
             var key = i.replace(/\\/g, '/');
