@@ -1,18 +1,25 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
-    var path = require('path');
+    var fs = require('fs');
     //配置文件
-    var config = grunt.file.readJSON('.hcjrc');
+    
     var conf = require('./hcj-config/basic-conf.js');
     var projects = grunt.file.readJSON('./hcj-config/projects-conf.js');
+
+    conf = JSON.stringify(conf);
+    conf = conf.replace(/\\\\/g, '/');
+    conf = JSON.parse(conf);
 
     //指定项目相关配置
     var _projects = projects.slice();
     var fileMap = {};
     var task = '';
     var isSingleProject = false;
+    var isDev = false;
     try{
         task = grunt.cli.tasks[0];
+
+        isDev = task.indexOf('dev') !== -1;
         task = task.split(':');
         //设置项目
         isSingleProject = task.length > 2 ? true : false; 
@@ -37,41 +44,14 @@ module.exports = function(grunt) {
         map.includeF = {};
         map.useminF = {
             options: {
-                assetsDirs: [
-                    // config.path.build.styles.replace(config.project.name, ''),
-                    // config.path.build.scripts.replace(config.project.name, ''),
-                    // config.path.build.images.replace(config.project.name, '')
-                ],
+                assetsDirs: [],
                 patterns: {
-                    pages: [
-                        // [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages'],
-                        // [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages'],
-                        // [new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-_]*\.js)', 'g'), 'replace scripts in pages'],
-                        // [new RegExp(': *[\'\"](('+config.project.name+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
-                            
-                        //     var base = config.path.build.scripts.replace(config.project.name, '');
-                        //     var summary = {};
-
-                        //     for (var i in grunt.filerev.summary) {
-                        //         var key = i.replace(/\\/g, '/'),
-                        //             val = grunt.filerev.summary[i].replace(/\\/g, '/');
-                        //         summary[key] = val;
-                        //     }
-
-                        //     return summary[
-                        //         base + match + '.js'
-                        //     ].replace(base, '').replace('.js', '');
-                        // }]
-                    ],
-                    styles: [
-                        // [new RegExp('(\/'+config.project.name+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']
-                    ]
+                    pages: [],
+                    styles: []
                 }
             },
             pages: [],
             styles: []
-            // pages: config.path.build.pages + '/**.html',
-            // styles: config.path.build.styles + '/**.css'
         };
 
         map.cleanF = {
@@ -79,56 +59,130 @@ module.exports = function(grunt) {
             styles: [],
             scripts: [],
             images: [],
-            build: []
+            build: [],
+            tmp: ['.tmpjs']
         };
 
-        //后续单独打包，不跟随项目
-        map.filerev.push({
-            expand: true,
-            cwd: distJs + '/lib',
-            src: ['**/*.js', '!**/*.**.js'],
-            dest: distJs + '/lib',
-            extDot: 'last',
-            ext: '.js'
-        });
-        map.filerev.push({
-            expand: true,
-            cwd: distJs + '/common',
-            src: ['**/*.js', '!**/*.**.js'],
-            dest: distJs + '/common',
-            extDot: 'last',
-            ext: '.js'
-        });
+        map.watchF = {
+            pages: {
+                files: [],
+                tasks: [grunt.cli.tasks[0]],
+                options: {livereload: conf.basic.server.livereload}
+            },
+            styles: {
+                files: [],
+                tasks: [grunt.cli.tasks[0]],
+                options: {livereload: conf.basic.server.livereload}
+            },
+            scripts: {
+                files: [],
+                tasks: [grunt.cli.tasks[0]],
+                options: {livereload: conf.basic.server.livereload}
+            },
+            images: {
+                files: [],
+                tasks: [grunt.cli.tasks[0]],
+                options: {livereload: conf.basic.server.livereload}
+            },
+            tpl: {
+                files: [],
+                tasks: [grunt.cli.tasks[0]],
+                options: {livereload: conf.basic.server.livereload}
+            }
+        }
 
-        //清除多余公用文件
-        map.cleanF.longversion = [
-            distJs + '/lib/**/*.*.*.**.{js,map}',
-            distJs + '/common/**/*.*.*.**.{js,map}',
-            '!'+distJs+'/common/HybridJSBridge/VH**.js'
-        ];
-        
-        if(!isSingleProject){
+        map.requirejsF = {};
+
+       
+        //build状态下需要打包common，lib
+        if(!isDev){
+            
             map.uglifyF.push({
                 expand: true,
                 cwd: srcJs + '/common',
                 src: ['**/*.js'],
-                dest: distJs + '/common',
-                extDot: 'last',
-                ext: '.js'
+                dest: '.tmpjs/'+distJs+'/common'
             });
             map.uglifyF.push({
                 expand: true,
                 cwd: srcJs + '/lib',
                 src: ['**/*.js'],
+                dest: '.tmpjs/'+distJs+'/lib'
+            });
+
+            if(!isSingleProject){
+                map.uglifyF.push({
+                    expand: true,
+                    cwd: srcJs + '/common',
+                    src: ['**/*.js'],
+                    dest: distJs + '/common',
+                    extDot: 'last',
+                    ext: '.js'
+                });
+                map.uglifyF.push({
+                    expand: true,
+                    cwd: srcJs + '/lib',
+                    src: ['**/*.js'],
+                    dest: distJs + '/lib',
+                    extDot: 'last',
+                    ext: '.js'
+                });
+                // 压缩移动端m.js，请勿颠倒次序！
+                var libjs = [
+                    srcJs + '/lib/underscore/underscore.js', 
+                    srcJs + '/lib/zepto/zepto.js', 
+                    srcJs + '/lib/template/doT.js',
+                    srcJs + '/lib/backbone/backbone.js', 
+                    srcJs + '/lib/requirejs/require.js'
+                ];
+                map.uglifyF.push({
+                    src: libjs,
+                    dest: distJs + '/lib/m.js'
+                });
+                map.uglifyF.push({
+                    src: libjs,
+                    dest: '.tmpjs/'+distJs+'/lib/m.js'
+                })
+            }
+
+            //后续单独打包，不跟随项目
+            map.filerev.push({
+                expand: true,
+                cwd: '.tmpjs/'+distJs+'/lib',
+                src: ['**/*.js'],
                 dest: distJs + '/lib',
                 extDot: 'last',
                 ext: '.js'
             });
-            
-            
+            map.filerev.push({
+                expand: true,
+                cwd: '.tmpjs/'+distJs+'/common',
+                src: ['**/*.js'],
+                dest: distJs + '/common',
+                extDot: 'last',
+                ext: '.js'
+            });
+
+            // //清除多余公用文件
+            // map.cleanF.longversion = [
+            //     distJs + '/lib/**/*.*.*.**.{js,map}',
+            //     distJs + '/common/**/*.*.*.**.{js,map}',
+            //     '!'+distJs+'/common/HybridJSBridge/VH**.js'
+            // ];
         }
+        
 
         
+    }
+
+    function removeOne(list, val){
+        var _list = list.slice();
+        list.forEach(function(o, i) {
+            if(o == val){
+                _list.splice(i, 1);
+            }
+        });
+        return _list;
     }
 
     /**
@@ -136,25 +190,45 @@ module.exports = function(grunt) {
      */
     function getProjects(){
         var p = _projects;
+        var _tmp = [];
 
         //选择某个项目
         if(isSingleProject){
-            p = task.slice(1).join(':');
-            p = [p];
+            var _current = task.slice(1).join(':');
+            p.forEach(function(o, i) {
+                if(o.indexOf(_current) === 0){
+                    _tmp.push(o);
+                }
+            });
+            if(_tmp.length > 1){
+                _tmp = removeOne(_tmp, _current);
+            }
+            p = _tmp;
         }
         
         p.forEach(function(o, i){
+
             var env = o.split(':')[0];
             var project = o.split(':')[1];
+            var page = o.split(':')[2];
             var cwd = conf[env].path;
-            var srcImg = path.join(cwd.src.images, project);
-            var distImg = path.join(cwd.build.images, project);
-            var srcCss = path.join(cwd.src.styles, project);
-            var distCss = path.join(cwd.build.styles, project);
-            var srcJs = path.join(cwd.src.scripts, project);
-            var distJs = path.join(cwd.build.scripts, project);
-            var srcPage = path.join(cwd.src.pages, project);
-            var distPage = path.join(cwd.build.pages, project);
+            var srcImg = cwd.src.images + '/' + project;
+            var distImg = cwd.build.images + '/' + project;
+            var srcCss = cwd.src.styles + '/' + project;
+            var distCss = cwd.build.styles + '/' + project;
+            var srcJs = cwd.src.scripts + '/' + project;
+            var distJs = cwd.build.scripts + '/' + project;
+            var srcPage = cwd.src.pages + '/' + project;
+            var distPage = cwd.build.pages + '/' + project;
+
+            //打包某页面
+            if(page){
+                srcCss += '/' + page;
+                distCss += '/' + page;
+                srcJs += '/' + page;
+                distJs += '/' + page;
+            }
+            
             fileMap.copyImagesF.push({
                 expand: true,
                 cwd: srcImg,
@@ -179,19 +253,19 @@ module.exports = function(grunt) {
             fileMap.filerev.push({
                 expand: true,
                 cwd: distCss,
-                src: ['*.css'],
+                src: ['**/*.css'],
                 dest: distCss,
             });
             fileMap.filerev.push({
                 expand: true,
                 cwd: distJs,
-                src: ['*.js'],
+                src: ['**/*.js'],
                 dest: distJs
             });
             fileMap.filerev.push({
                 expand: true,
                 cwd: distImg,
-                src: ['*.{png,jpg,gif,webp}'],
+                src: ['**/*.{png,jpg,gif,webp}'],
                 dest: distImg
             });
 
@@ -217,7 +291,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: srcPage,
-                    src: ['**/*'+htmlExt],
+                    src: [page ? (page + htmlExt) : ('**/*'+htmlExt)],
                     dest: distPage,
                     ext: htmlExt
                 }]
@@ -226,50 +300,97 @@ module.exports = function(grunt) {
             fileMap.useminF.pages.push(distPage + '/**'+htmlExt);
             fileMap.useminF.styles.push(distCss + '/**.css');
             var _pages = fileMap.useminF.options.patterns.pages;
-            _pages.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages']);
-            _pages.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages']);
-            _pages.push([new RegExp('(\/(lib|common)\/.*\/[a-zA-Z0-9\-_]*\.js)', 'g'), 'replace scripts in pages']);
-            fileMap.useminF.options.patterns.pages.push([new RegExp(': *[\'\"](('+project+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
-
-                var base = distJs.replace(project, '');
-                
-                base = base.replace(/\\/g, '/');
-
-                var summary = {};
-
-                for (var i in grunt.filerev.summary) {
-
-                    var key = i.replace(/\\/g, '/');
-                    
-                    var val = grunt.filerev.summary[i].replace(/\\/g, '/');
-                    
-                    if(key.indexOf('.js') !== -1){
-                        summary[key] = val;
-                    }
-                    
-                }
-                var result;
-                var mapFile = summary[
-                    base + match + '.js'
-                ];
-                if(mapFile){
-                    result = mapFile.replace(base, '').replace('.js', '');
-                }else{
-                    result = match;
-                }
-
-                return result;
+            var _assetsDirs = fileMap.useminF.options.assetsDirs;
+            var _project = project.replace(/\//g, '\\\/');
+            
+            _pages.push([new RegExp('(\/'+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages']);
+            _pages.push([new RegExp('(\/'+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages']);
+            _pages.push([new RegExp('[\'\"][^\'\"]*(('+_project+'|lib|common)\/[^\'\"]*\)\.js[\'\"]', 'g'), 'replace scripts in pages', function(match){
+                return getVersionFile(distJs, project, match);
+            }]);
+            _pages.push([new RegExp(': *[\'\"](('+_project+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
+                return getVersionFile(distJs, project, match);
             }]);
             fileMap.useminF.options.patterns.styles.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']);
-            fileMap.useminF.options.assetsDirs.push(distJs.replace(project, ''));
-            fileMap.useminF.options.assetsDirs.push(distCss.replace(project, ''));
-            fileMap.useminF.options.assetsDirs.push(distImg.replace(project, ''));
+            _assetsDirs.push(distJs.replace(project, ''));
+            _assetsDirs.push(distCss.replace(project, ''));
+            _assetsDirs.push(distImg.replace(project, ''));
+
+            fileMap.watchF.pages.files.push(srcPage + (page ? ('/' + page + htmlExt) : ('/**/*'+htmlExt)));
+            fileMap.watchF.styles.files.push(srcCss + '/**/*.less');
+            fileMap.watchF.scripts.files.push(srcJs + '/**/*.js');
+            fileMap.watchF.scripts.files.push(cwd.src.scripts + '/common/**/*.js');
+            fileMap.watchF.images.files.push(srcImg + '/**/*.*');
+            fileMap.watchF.scripts.files.push(srcJs + '/**/*.tpl');
+            
+            //移动端使用requirejs,page存在才打包
+            if(page){
+                var isMainExist = fs.existsSync(srcJs + '/main.js');
+                
+                if(env == 'mobile' && isMainExist){
+                    var requirejsEnv = task.indexOf('build') !== -1 ? 'build' : 'dev';
+                    var requirejsOpts = {
+                        baseUrl: srcJs.replace(project + '/' + page, ''),
+                        include: [project + '/' + page + '/main.js'],       
+                        out: distJs + '/main.js',
+                        paths: {
+                        'text': 'lib/requirejs/text'
+                        },
+                        stubModules: ['text']
+                    };
+                    if(requirejsEnv == 'build'){
+                        requirejsOpts.optimize = 'uglify';
+                    }else{
+                        requirejsOpts.generateSourceMaps = true;
+                        requirejsOpts.optimize = 'none';
+                    }
+                    fileMap.requirejsF[project + '-' + page + '-' + requirejsEnv] = {
+                        options: requirejsOpts
+                    };
+                }
+            }
 
         });
         
         return p;
     }
 
+
+    function getVersionFile(distJs, project, match){
+        var base = distJs.replace(project, '');
+                
+        var summary = {};
+        // console.log(match)
+        for (var i in grunt.filerev.summary) {
+
+            var key = i.replace(/\\/g, '/');
+            
+            var val = grunt.filerev.summary[i].replace(/\\/g, '/');
+            
+            if(key.indexOf('.js') !== -1){
+                summary[key] = val;
+            }
+            
+        }
+        var result;
+        var root;
+        if(/^(lib|common)\/.*$/.test(match)){
+            root = '.tmpjs/' + base;
+        }else{
+            root = base;
+        }
+        var mapFile = summary[
+            root + match + '.js'
+        ];
+        
+        if(mapFile){
+            result = mapFile.replace(base, '').replace('.js', '');
+        }else{
+            result = match;
+        }
+
+        return result;
+    }
 
     /**
      * [初始化grunt配置]
@@ -280,7 +401,7 @@ module.exports = function(grunt) {
             connect: {
                 options: {
                     port: conf.basic.server.port,
-                    hostname: '127.0.0.1',
+                    hostname: 'mlc.vip.com',
                     livereload: conf.basic.server.livereload,
                     protocol: 'https',
                     key: grunt.file.read('ssl/server.key').toString(),
@@ -292,8 +413,8 @@ module.exports = function(grunt) {
                         base: [
                             conf.desktop.server.pages.path,
                             conf.mobile.server.pages.path,
-                            conf.desktop.server.statics.path,
-                            conf.mobile.server.statics.path,
+                            conf.basic.desktop.distRoot,
+                            conf.basic.mobile.distRoot,
                             './'
                         ]
                     }
@@ -305,44 +426,15 @@ module.exports = function(grunt) {
                         base: [
                             conf.desktop.server.pages.path,
                             conf.mobile.server.pages.path,
-                            conf.desktop.server.statics.path,
-                            conf.mobile.server.statics.path,
+                            conf.basic.desktop.distRoot,
+                            conf.basic.mobile.distRoot,
                             './'
                         ]
                     }
                 }
             },
 
-            // watch: {
-            //     pages: {
-            //         files: [config.path.src.pages + '/**.html'],
-            //         tasks: ['clean:pages', 'includes'],
-            //         options: {
-            //             livereload: config.server.livereload
-            //         }
-            //     },
-            //     styles: {
-            //         files: [config.path.src.styles + '/**.less'],
-            //         tasks: ['clean:styles', 'less:dev'],
-            //         options: {
-            //             livereload: config.server.livereload
-            //         }
-            //     },
-            //     scripts: {
-            //         files: [config.path.src.scripts + '/**.js'],
-            //         tasks: ['clean:scripts', 'uglify:dev'],
-            //         options: {
-            //             livereload: config.server.livereload
-            //         }
-            //     },
-            //     images: {
-            //         files: [config.path.src.images + '/**.*'],
-            //         tasks: ['clean:images', 'copy:images'],
-            //         options: {
-            //             livereload: config.server.livereload
-            //         }
-            //     }
-            // },
+            watch: fileMap.watchF,
 
             copy: {
                 images: {
@@ -361,22 +453,16 @@ module.exports = function(grunt) {
             },
 
             less: {
-                // dev: {
-                //     options: {
-                //         sourceMapRootpath: '/',
-                //         sourceMap: true,
-                //         sourceMapFileInline: true,
-                //         paths: config.server.static.path,
-                //         compress: true
-                //     },
-                //     files: [{
-                //         expand: true,
-                //         cwd: config.path.src.styles,
-                //         src: ['**/*.less'],
-                //         dest: config.path.build.styles,
-                //         ext: '.css'
-                //     }]
-                // },
+                dev: {
+                    options: {
+                        sourceMapRootpath: '/',
+                        sourceMap: true,
+                        sourceMapFileInline: true,
+                        // paths: config.server.static.path,
+                        compress: true
+                    },
+                    files: fileMap.lessBuildF
+                },
                 build: {
                     options: {
                         // paths: config.server.static.path,
@@ -387,33 +473,13 @@ module.exports = function(grunt) {
             },
 
             uglify: {
-                // dev: {
-                //     options: {
-                //         mangle: true,
-                //         sourceMap: true
-                //     },
-                //     files: [{
-                //         expand: true,
-                //         cwd: config.path.src.scripts,
-                //         src: ['**/*.js'],
-                //         dest: config.path.build.scripts,
-                //         ext: '.js'
-                //     }, {
-                //         expand: true,
-                //         cwd: config.path.src.scripts.replace(config.project.name, '') + 'lib',
-                //         src: ['**/*.js'],
-                //         dest: config.path.build.scripts.replace(config.project.name, '') + 'lib',
-                //         extDot: 'last',
-                //         ext: '.js'
-                //     }, {
-                //         expand: true,
-                //         cwd: config.path.src.scripts.replace(config.project.name, '') + 'common',
-                //         src: ['**/*.js'],
-                //         dest: config.path.build.scripts.replace(config.project.name, '') + 'common',
-                //         extDot: 'last',
-                //         ext: '.js'
-                //     }]
-                // },
+                dev: {
+                    options: {
+                        mangle: false,
+                        sourceMap: true
+                    },
+                    files: fileMap.uglifyF
+                },
                 build: {
                     options: {
                         mangle: true
@@ -435,7 +501,9 @@ module.exports = function(grunt) {
             usemin: fileMap.useminF,
             clean: fileMap.cleanF,
 
-            includes: fileMap.includeF
+            includes: fileMap.includeF,
+
+            requirejs: fileMap.requirejsF
         });
     }
 
@@ -445,42 +513,66 @@ module.exports = function(grunt) {
 
     init();
 
-    grunt.registerTask('dev', [
-        'clean',
+    var devTasks = [
+        // 'clean',
         'includes',
         'less:dev',
         'uglify:dev',
+        'requirejs',
         'copy:images',
-        'connect:src',
+        // 'connect:src',
         'watch'
-    ]);
-
+    ];
 
     var buildTasks = [
         'clean',
         'includes',
         'htmlmin',
         'less:build',
+
         'uglify:build',
+        'requirejs',
         'copy:images',
         'filerev',
+        'clean:tmp',
         'usemin',
         // 'connect:build'
     ];
 
+    var hasRequireJS = false;
+    for (var key in fileMap.requirejsF) {
+        if(fileMap.requirejsF.hasOwnProperty(key)){
+            hasRequireJS = true;
+        }
+    }
+
+    if(!hasRequireJS){
+        devTasks = removeOne(devTasks, 'requirejs');
+        buildTasks = removeOne(buildTasks, 'requirejs');
+    }
+    
+    grunt.registerTask('dev:all', devTasks);
+
     grunt.registerTask('build:all', buildTasks);
 
-    var isInProject = false;
+    var isDevProject = false;
+    var isBuildProject = false;
     var _task = task.join(':');
     _projects.forEach(function(o, i){
         if(_task === 'build:' + o){
-            isInProject = true;
+            isBuildProject = true;
+        }
+        if(_task === 'dev:' + o){
+            isDevProject = true;
         }
     });
-    if(isSingleProject && isInProject){
-        grunt.registerTask(_task, buildTasks);
-    }else{
-        console.error('命令无效');
+    if(isSingleProject){
+        if(isBuildProject){
+            grunt.registerTask(_task, buildTasks);    
+        }
+        if(isDevProject){
+            grunt.registerTask(_task, devTasks);    
+        }
     }
     
 };

@@ -1,10 +1,10 @@
 /**
  * @author <%= authorName %>
- * @description <%= projectDesc %>
+ * @description <%= pageDesc %>
  * @date <%= createDate %>
  */
 
-define(['zepto', 'util-demo', 'md5'], function($, util) {
+define(function($, util) {
     function HcjDemo() {
         this.init();
     }
