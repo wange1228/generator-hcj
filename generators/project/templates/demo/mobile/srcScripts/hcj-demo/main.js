@@ -1,21 +1,31 @@
 /**
  * @author <%= authorName %>
- * @description <%= projectDesc %>
+ * @description <%= pageDesc %>
  * @date <%= createDate %>
  */
 
-define(['zepto', 'util-demo', 'md5'], function($, util) {
-    function HcjDemo() {
-        this.init();
-    }
-    
-    HcjDemo.prototype = {
-        init: function() {
-            console.log($);
-            console.log(hex_md5);
-            console.log(util.test);
-        }
-    };
+require([
+    '<%= projectName %>/<%= pageName %>/list'
+], function(
+    List
+) {
 
-    new HcjDemo();
+    // 响应式布局
+    $('html').css({
+        fontSize:100*$('body').width()/750+'px'
+    });
+
+    //hcj-demo列表
+    var list = new List({
+        el: '#Hcjlist'
+    });
+
+    //对象事件绑定
+    list.on({
+        'get.data': function(data) {
+            console.log(data);
+            //todo
+        }
+    });
+   
 });

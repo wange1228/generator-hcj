@@ -7,14 +7,18 @@ var path = require('path');
 var _ = require('lodash');
 var cfg = require('../hcj-config/basic-conf.js');
 
-var generators = yeoman.generators;
-
-var HCJGenerator = generators.Base.extend({
+module.exports = yeoman.Base.extend({
     initializing: function() {
-        
+        var me = this;
+        var done = this.async();
+        me.projectFile = 'hcj-config/projects-conf.js';
+        fs.readFile(me.projectFile, 'utf-8', function(err, data) {
+            me.projectData = data;
+            done();
+        });
     },
     prompting: function () {
-        var that = this;
+        var me = this;
         var done = this.async();
         this.log(yosay(
             '欢迎使用 ' + chalk.red('HCJ 前端开发工作流')
@@ -46,8 +50,14 @@ var HCJGenerator = generators.Base.extend({
                 default: 'project-xxx'
             },
             {
-                name: 'projectDesc',
-                message: '项目描述：',
+                name: 'pageName',
+                message: '页面名称：',
+                type: 'input',
+                default: 'index'
+            },
+            {
+                name: 'pageDesc',
+                message: '页面描述：',
                 type: 'input'
             }
         ];
@@ -72,35 +82,36 @@ var HCJGenerator = generators.Base.extend({
         var from = path.join('demo', project);
         var to = cfg[this.projectType].path.src;
         var done = this.async();
-        var projectConf = 'hcj-config/projects-conf.js';
 
-        fs.readFile(projectConf, 'utf-8', function(err, data) {
-            var projectName = me.projectType + ':' + me.projectName;
-            data = JSON.parse(data);
-            if(data.indexOf(projectName) !== -1){
-                me.log(chalk.red(me.projectType + '/' + me.projectName + '项目已经创建，请勿重复创建!'));
-            }else{
-                data.push(projectName)
-                data = JSON.stringify(data);
-                data = data.replace(/,/g, ',\n\r').replace(/\[/g, '\[\n\r').replace(/\]/g, '\n\r\]').replace(/(".*?")/g, '    $1');
-                fs.writeFile(projectConf, data, function (err) {
-                    if (err) throw err;
-                    // 复制模板文件
-                    console.log(from, path.join(from, 'srcPages/hcj-demo'), path.join(to['pages'], me.projectName))
-                    me.directory(path.join(from, 'srcPages/hcj-demo'), path.join(to['pages'], me.projectName));
-
-                    me.directory(path.join(from, 'srcStyles/hcj-demo'), path.join(to['styles'], me.projectName));
-                    me.directory(path.join(from, 'srcScripts/hcj-demo'), path.join(to['scripts'], me.projectName));
-                    me.directory(path.join(from, 'srcImages/hcj-demo'), path.join(to['images'], me.projectName));
-                    
-                    
-                    me.log(chalk.green('=== 创建完成 ==='));
-                    done();
-                });
-                
+        var projectName = me.projectType + ':' + me.projectName;
+        var pageName = projectName + ':' + me.pageName;
+        var data = JSON.parse(me.projectData);
+        var pageExt = me.projectType == 'mobile' ? '.html' : '.ftl';
+        
+        if(data.indexOf(pageName) !== -1){
+            me.log(chalk.red(me.projectType + '/' + me.projectName + '/' + me.pageName + '页面已经创建，请勿重复创建!'));
+        }else{
+            if(data.indexOf(projectName) === -1){
+                data.push(projectName);
             }
-        });
+            data.push(pageName);
+            data = JSON.stringify(data);
+            data = data.replace(/,/g, ',\n\r').replace(/\[/g, '\[\n\r').replace(/\]/g, '\n\r\]').replace(/(".*?")/g, '    $1');
+            fs.writeFile(me.projectFile, data, function (err) {
+                if (err) throw err;
+                // 复制模板文件
+                me.copy(path.join(from, 'srcPages/hcj-demo', 'index.html'), path.join(to['pages'], me.projectName, me.pageName + pageExt));
+
+                me.directory(path.join(from, 'srcStyles/hcj-demo'), path.join(to['styles'], me.projectName, me.pageName));
+                me.directory(path.join(from, 'srcScripts/hcj-demo'), path.join(to['scripts'], me.projectName, me.pageName));
+                me.directory(path.join(from, 'srcImages/hcj-demo'), path.join(to['images'], me.projectName));
+                
+                
+                me.log(chalk.green('=== 创建完成 ==='));
+                done();
+            });
+            
+        }
     }
 });
 
-module.exports = HCJGenerator;
