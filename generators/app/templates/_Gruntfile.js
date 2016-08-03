@@ -305,13 +305,15 @@ module.exports = function(grunt) {
             var _assetsDirs = fileMap.useminF.options.assetsDirs;
             var _project = project.replace(/\//g, '\\\/');
             
-            _pages.push([new RegExp('(\/'+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*\.css)', 'g'), 'replace styles in pages']);
+            _pages.push([new RegExp('\/('+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*)\.css', 'g'), 'replace styles in pages', function(match){
+                return getVersionFile(distCss, project, page, match, '.css');
+            }]);
             _pages.push([new RegExp('(\/'+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages']);
             _pages.push([new RegExp('[\'\"][^\'\"]*(('+_project+'|lib|common)\/[^\'\"]*\)\.js[\'\"]', 'g'), 'replace scripts in pages', function(match){
-                return getVersionFile(distJs, project, page, match);
+                return getVersionFile(distJs, project, page, match, '.js');
             }]);
             _pages.push([new RegExp(': *[\'\"](('+_project+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
-                return getVersionFile(distJs, project, page, match);
+                return getVersionFile(distJs, project, page, match, '.js');
             }]);
             fileMap.useminF.options.patterns.styles.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']);
             _assetsDirs.push(distJs.replace(project, ''));
@@ -358,9 +360,9 @@ module.exports = function(grunt) {
     }
 
 
-    function getVersionFile(distJs, project, page, match){
+    function getVersionFile(distRoot, project, page, match, ext){
 
-        var base = distJs.replace(page ? (project + '/' + page) : project, '');
+        var base = distRoot.replace(page ? (project + '/' + page) : project, '');
                 
         var summary = {};
         
@@ -370,7 +372,7 @@ module.exports = function(grunt) {
             
             var val = grunt.filerev.summary[i].replace(/\\/g, '/');
             
-            if(key.indexOf('.js') !== -1){
+            if(key.indexOf(ext) !== -1){
                 summary[key] = val;
             }
             
@@ -383,11 +385,11 @@ module.exports = function(grunt) {
             root = base;
         }
         var mapFile = summary[
-            root + match + '.js'
+            root + match + ext
         ];
         
         if(mapFile){
-            result = mapFile.replace(base, '').replace('.js', '');
+            result = mapFile.replace(base, '').replace(ext, '');
         }else{
             result = match;
         }
