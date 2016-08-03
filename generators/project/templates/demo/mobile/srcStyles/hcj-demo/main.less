@@ -8,5 +8,16 @@
 @import '../../base.less';
 @imagesPath: '//<%= staticSvrHost %>/mobile/images/<%= projectName %>';
 
+/*
+    logic size:vw = 640px * 1% = 6.4px;
+    rem = 1.5625 = 100px / 6.4px;
+    html-font-size = 1rem = 100px / 6.4px = 15.625%;
+ */
+@vw-rem: 7.5;
+
+html {
+    font-size: 100vw / @vw-rem;
+}
+
 @import './hcj-list.less';
 
