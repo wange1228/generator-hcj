@@ -293,18 +293,21 @@ module.exports = function(grunt) {
                 ext: htmlExt
             });
             
-            fileMap.includeF[project] = {
+            var includeFProp = page ? project + '/' + page : project;
+            var includeFSrc = page ? (page + htmlExt) : ('**/*'+htmlExt);
+            fileMap.includeF[includeFProp] = {
                 options: {
                     includePath: srcPage
                 },
                 files: [{
                     expand: true,
                     cwd: srcPage,
-                    src: [page ? (page + htmlExt) : ('**/*'+htmlExt)],
+                    src: [includeFSrc],
                     dest: distPage,
                     ext: htmlExt
                 }]
             };
+
             
             fileMap.useminF.pages.push(distPage + '/**'+htmlExt);
             fileMap.useminF.styles.push(distCss + '/**.css');
