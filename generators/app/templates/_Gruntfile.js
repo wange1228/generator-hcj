@@ -126,7 +126,14 @@ module.exports = function(grunt) {
                     src: libjs,
                     dest: distJs + '/lib/m.js'
                 });
-                
+
+                map.copyImagesF.push({
+                    expand: true,
+                    cwd: srcImg + '/common',
+                    src: '**',
+                    dest: distImg + '/common',
+                    filter: 'isFile'
+                });
             }
 
             //放到临时目录
@@ -322,8 +329,9 @@ module.exports = function(grunt) {
 
             fileMap.watchF.pages.files.push(srcPage + (page ? ('/' + page + htmlExt) : ('/**/*'+htmlExt)));
             fileMap.watchF.styles.files.push(srcCss + '/**/*.less');
+            fileMap.watchF.styles.files.push(cwd.src.styles + '/common/**/*.less');
             fileMap.watchF.scripts.files.push(srcJs + '/**/*.js');
-            fileMap.watchF.scripts.files.push(cwd.src.scripts + '/common/**/*.js');
+            fileMap.watchF.scripts.files.push(cwd.src.scripts + '/common/**/*.*');
             fileMap.watchF.images.files.push(srcImg + '/**/*.*');
             fileMap.watchF.scripts.files.push(srcJs + '/**/*.tpl');
             
