@@ -5,10 +5,14 @@
  */
 
 require([
-    '<%= projectName %>/<%= pageName %>/list'
+    '<%= projectName %>/<%= pageName %>/list',
+    'common/fastclick'
 ], function(
-    List
+    List,
+    fastclick
 ) {
+
+    fastclick.attach(document.body);
 
     // 响应式布局
     $('html').css({

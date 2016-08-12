@@ -205,13 +205,24 @@ module.exports = function(grunt) {
         if(isSingleProject){
             var _current = task.slice(1).join(':');
             p.forEach(function(o, i) {
+
                 if(o.indexOf(_current) === 0){
                     _tmp.push(o);
                 }
             });
-            if(_tmp.length > 1){
-                _tmp = removeOne(_tmp, _current);
+
+            var seperatorArray = _current.match(/:/g);
+            if(_tmp.length > 1 && seperatorArray instanceof Array){
+                //mobile:balance:recharge mobile:balance:rechargeSuccess
+                if(seperatorArray.length > 1){
+                    _tmp = [_current];
+                }else if(seperatorArray.length == 1){
+                    //mobile:balance
+                    _tmp = removeOne(_tmp, _current);
+                }
+                
             }
+            
             p = _tmp;
         }
         
@@ -278,7 +289,7 @@ module.exports = function(grunt) {
                 dest: distImg
             });
 
-            fileMap.cleanF.pages.push(distPage);
+            fileMap.cleanF.pages.push(page ? distPage + '/' + page : distPage);
             fileMap.cleanF.styles.push(distCss);
             fileMap.cleanF.scripts.push(distJs);
             fileMap.cleanF.images.push(distImg);
