@@ -5,10 +5,8 @@
  */
 
 require([
-    '<%= projectName %>/<%= pageName %>/list',
     'common/fastclick'
 ], function(
-    List,
     fastclick
 ) {
 
@@ -19,17 +17,5 @@ require([
         fontSize:100*$('body').width()/750+'px'
     });
 
-    //hcj-demo列表
-    var list = new List({
-        el: '#Hcjlist'
-    });
-
-    //对象事件绑定
-    list.on({
-        'get.data': function(data) {
-            console.log(data);
-            //todo
-        }
-    });
    
 });
