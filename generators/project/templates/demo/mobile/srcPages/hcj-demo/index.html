@@ -6,16 +6,16 @@
     <title>HCJ DEMO</title>
 </head>
 <body>
-    <h1>Hello HCJ</h1>
     
-    <div class="list-hcj" id="Hcjlist"></div>
     
     <script src="//<%= staticSvrHost %>/mobile/scripts/lib/m.js"></script>
     
     <script type="text/javascript">
         requirejs.config({
             baseUrl: '//<%= staticSvrHost %>/mobile/scripts/',
-            paths: {},
+            paths: {
+                'text': 'lib/requirejs/text'
+            },
             shim: {}
         });
     </script>
