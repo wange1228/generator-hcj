@@ -19,7 +19,10 @@ class Concat{
         let srcJs = util.getSrc('mobile').scripts;
         this.task.concat.mobileLib = {
             src: libjs,
-            dest: srcJs + '/lib/m.js'
+            dest: srcJs + '/lib/m.js',
+            options: {
+                footer: '\nrequirejs.config({paths:{"text": "lib/requirejs/text"}})'
+            }
         };
         
     }
