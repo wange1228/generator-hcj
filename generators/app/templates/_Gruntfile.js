@@ -2,17 +2,17 @@
 
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
-    let util = require('./hcj-config/grunt/util.js');
-    let Uglify = require('./hcj-config/grunt/uglify.js');
-    let Copy = require('./hcj-config/grunt/copy.js');
-    let Less = require('./hcj-config/grunt/less.js');
-    let Clean = require('./hcj-config/grunt/clean.js');
-    let Concat = require('./hcj-config/grunt/concat.js');
-    let Includes = require('./hcj-config/grunt/includes.js');
-    let Htmlmin = require('./hcj-config/grunt/htmlmin.js');
-    let Requirejs = require('./hcj-config/grunt/requirejs.js');
-    let Filerev = require('./hcj-config/grunt/filerev.js');
-    let Usemin = require('./hcj-config/grunt/usemin.js');
+    let util = require('./hcj-config/grunt/lib/util.js');
+    let Uglify = require('./hcj-config/grunt/lib/uglify.js');
+    let Copy = require('./hcj-config/grunt/lib/copy.js');
+    let Less = require('./hcj-config/grunt/lib/less.js');
+    let Clean = require('./hcj-config/grunt/lib/clean.js');
+    let Concat = require('./hcj-config/grunt/lib/concat.js');
+    let Includes = require('./hcj-config/grunt/lib/includes.js');
+    let Htmlmin = require('./hcj-config/grunt/lib/htmlmin.js');
+    let Requirejs = require('./hcj-config/grunt/lib/requirejs.js');
+    let Filerev = require('./hcj-config/grunt/lib/filerev.js');
+    let Usemin = require('./hcj-config/grunt/lib/usemin.js');
 
     let task = '';
     //是否单独构建项目

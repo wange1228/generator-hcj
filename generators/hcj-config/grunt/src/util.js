@@ -8,8 +8,8 @@ module.exports = {
     projects: null, //项目配置
     isSingle: false,
     setConfig: function(isSingle, task) {
-        let basicPath = Path.resolve(__dirname, '../basic-conf.js');
-        let projectPath = Path.resolve(__dirname, '../projects-conf.js');
+        let basicPath = Path.resolve(__dirname, '../../basic-conf.js');
+        let projectPath = Path.resolve(__dirname, '../../projects-conf.js');
         let conf = require(basicPath);
         let projects = Fs.readFileSync(projectPath, 'utf-8');
         conf = JSON.stringify(conf);
