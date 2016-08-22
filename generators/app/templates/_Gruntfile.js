@@ -1,22 +1,20 @@
-'use strict'
-
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
-    let util = require('./hcj-config/grunt/lib/util.js');
-    let Uglify = require('./hcj-config/grunt/lib/uglify.js');
-    let Copy = require('./hcj-config/grunt/lib/copy.js');
-    let Less = require('./hcj-config/grunt/lib/less.js');
-    let Clean = require('./hcj-config/grunt/lib/clean.js');
-    let Concat = require('./hcj-config/grunt/lib/concat.js');
-    let Includes = require('./hcj-config/grunt/lib/includes.js');
-    let Htmlmin = require('./hcj-config/grunt/lib/htmlmin.js');
-    let Requirejs = require('./hcj-config/grunt/lib/requirejs.js');
-    let Filerev = require('./hcj-config/grunt/lib/filerev.js');
-    let Usemin = require('./hcj-config/grunt/lib/usemin.js');
+    var util = require('./hcj-config/grunt/lib/util.js');
+    var Uglify = require('./hcj-config/grunt/lib/uglify.js');
+    var Copy = require('./hcj-config/grunt/lib/copy.js');
+    var Less = require('./hcj-config/grunt/lib/less.js');
+    var Clean = require('./hcj-config/grunt/lib/clean.js');
+    var Concat = require('./hcj-config/grunt/lib/concat.js');
+    var Includes = require('./hcj-config/grunt/lib/includes.js');
+    var Htmlmin = require('./hcj-config/grunt/lib/htmlmin.js');
+    var Requirejs = require('./hcj-config/grunt/lib/requirejs.js');
+    var Filerev = require('./hcj-config/grunt/lib/filerev.js');
+    var Usemin = require('./hcj-config/grunt/lib/usemin.js');
 
-    let task = '';
+    var task = '';
     //是否单独构建项目
-    let isSingle = false;
+    var isSingle = false;
     try{
         task = grunt.cli.tasks[0];
 
@@ -30,27 +28,27 @@ module.exports = function(grunt) {
 
     util.setConfig(isSingle, task);
 
-    let taskGroup = [];
+    var taskGroup = [];
 
-    let uglify = taskGroup.push({name: 'uglify', o: new Uglify(isSingle)});
-    let copy = taskGroup.push({name: 'copy', o: new Copy(isSingle)});
-    let less = taskGroup.push({name: 'less', o: new Less(isSingle)});
-    let clean = taskGroup.push({name: 'clean', o: new Clean(isSingle)});
-    let concat = taskGroup.push({name: 'concat', o: new Concat(isSingle)});
-    let includes = taskGroup.push({name: 'includes', o: new Includes(isSingle)});
-    let htmlmin = taskGroup.push({name: 'htmlmin', o: new Htmlmin(isSingle)});
-    let requirejs = taskGroup.push({name: 'requirejs', o: new Requirejs(isSingle)});
-    let filerev = taskGroup.push({name: 'filerev', o: new Filerev(isSingle)});
-    let usemin = taskGroup.push({name: 'usemin', o: new Usemin(isSingle)});
+    var uglify = taskGroup.push({name: 'uglify', o: new Uglify(isSingle)});
+    var copy = taskGroup.push({name: 'copy', o: new Copy(isSingle)});
+    var less = taskGroup.push({name: 'less', o: new Less(isSingle)});
+    var clean = taskGroup.push({name: 'clean', o: new Clean(isSingle)});
+    var concat = taskGroup.push({name: 'concat', o: new Concat(isSingle)});
+    var includes = taskGroup.push({name: 'includes', o: new Includes(isSingle)});
+    var htmlmin = taskGroup.push({name: 'htmlmin', o: new Htmlmin(isSingle)});
+    var requirejs = taskGroup.push({name: 'requirejs', o: new Requirejs(isSingle)});
+    var filerev = taskGroup.push({name: 'filerev', o: new Filerev(isSingle)});
+    var usemin = taskGroup.push({name: 'usemin', o: new Usemin(isSingle)});
 
-    let projects = util.getProjects();
+    var projects = util.getProjects();
 
     projects.forEach(function(o, i){
-        let obj = o.split(':');
-        let env = obj[0];
-        let project = obj[1];
-        let page = obj[2];
-        let path = util.getPath(env, project, page);
+        var obj = o.split(':');
+        var env = obj[0];
+        var project = obj[1];
+        var page = obj[2];
+        var path = util.getPath(env, project, page);
 
         //项目/页面注入任务
         taskGroup.forEach(function(o, i){
@@ -63,7 +61,7 @@ module.exports = function(grunt) {
      * [初始化grunt配置]
      */
     function init(){
-        let config = {};
+        var config = {};
         taskGroup.forEach(function(o, i){
             config[o.name] = o.o.task[o.name];
         });
@@ -86,7 +84,7 @@ module.exports = function(grunt) {
         'usemin'
     ];
 
-    let hasRequireJS = false;
+    var hasRequireJS = false;
     taskGroup.forEach(function(o, i){
         if(o.name == 'requirejs'){
             hasRequireJS = o.o.hasRequirejs();
@@ -99,8 +97,8 @@ module.exports = function(grunt) {
     
     grunt.registerTask('build:all', buildTasks);
 
-    let isBuildProject = false;
-    let _task = task.join(':');
+    var isBuildProject = false;
+    var _task = task.join(':');
     util.projects.forEach(function(o, i){
         if(_task === 'build:' + o){
             isBuildProject = true;
