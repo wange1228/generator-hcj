@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
     include "../../pages/common/v2/metaHead.html"
-    <link rel="stylesheet" href="//<%= staticSvrHost %>/mobile/styles/<%= projectName %>/<%= pageName %>/main.css">
+    <link rel="stylesheet" href="//<%= staticSvrHost %><%= pathName %>/styles/<%= projectName %>/<%= pageName %>/main.css">
     <title>HCJ DEMO</title>
 </head>
 <body>
     
     
-    <script src="//<%= staticSvrHost %>/mobile/scripts/lib/m.js"></script>
+    <script src="//<%= staticSvrHost %><%= pathName %>/scripts/lib/m.js"></script>
     
     <script type="text/javascript">
         requirejs.config({
-            baseUrl: '//<%= staticSvrHost %>/mobile/scripts/',
+            baseUrl: '//<%= staticSvrHost %><%= pathName %>/scripts/',
             paths: {
                 'text': 'lib/requirejs/text'
             },
             shim: {}
         });
     </script>
-    <script src="//<%= staticSvrHost %>/mobile/scripts/<%= projectName %>/<%= pageName %>/main.js"></script>
+    <script src="//<%= staticSvrHost %><%= pathName %>/scripts/<%= projectName %>/<%= pageName %>/main.js"></script>
 </body>
 </html>

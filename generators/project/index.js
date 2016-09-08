@@ -5,8 +5,11 @@ var yosay = require('yosay');
 var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
-var cfg = require('../hcj-config/basic-conf.js');
+var currentPath = process.cwd();
+var cfgPath = path.join(currentPath, 'hcj-config/basic-conf.js');
+var cfg = require(cfgPath);
 
+console.log(cfgPath)
 module.exports = yeoman.Base.extend({
     initializing: function() {
         var me = this;
@@ -28,6 +31,21 @@ module.exports = yeoman.Base.extend({
         this.authorName = this.user.git.username + ' ' + '<' + this.user.git.email + '>';
 
         var prompts = [
+            {
+                name: 'gitName',
+                message: '仓库名称',
+                type: 'list',
+                choices: [
+                    {
+                        name: '理财',
+                        value: 'finance'
+                    },
+                    {
+                        name: '活动',
+                        value: 'activities'
+                    }
+                ]
+            },
             {
                 name: 'projectType',
                 message: '项目类型：',
@@ -69,6 +87,7 @@ module.exports = yeoman.Base.extend({
                 }
             }
             this.staticSvrHost = cfg.basic[this.projectType].host.statics;
+            this.pathName = this.gitName == 'finance' ? '/mobile' : '';
             done();
         }.bind(this));
     },
