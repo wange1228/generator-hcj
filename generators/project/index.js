@@ -5,7 +5,9 @@ var yosay = require('yosay');
 var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
-var cfg = require('../hcj-config/basic-conf.js');
+var cfgPath = path.join(process.cwd(), 'hcj-config/basic-conf.js');
+var cfg = require(cfgPath);
+
 
 module.exports = yeoman.Base.extend({
     initializing: function() {
