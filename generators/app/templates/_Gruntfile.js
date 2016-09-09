@@ -2,7 +2,7 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
     var util = require('./hcj-config/grunt/lib/util.js');
     var Uglify = require('./hcj-config/grunt/lib/uglify.js');
-    var Copy = require('./hcj-config/grunt/lib/copy.js');
+    // var Copy = require('./hcj-config/grunt/lib/copy.js');
     var Less = require('./hcj-config/grunt/lib/less.js');
     var Clean = require('./hcj-config/grunt/lib/clean.js');
     var Concat = require('./hcj-config/grunt/lib/concat.js');
@@ -11,6 +11,7 @@ module.exports = function(grunt) {
     var Requirejs = require('./hcj-config/grunt/lib/requirejs.js');
     var Filerev = require('./hcj-config/grunt/lib/filerev.js');
     var Usemin = require('./hcj-config/grunt/lib/usemin.js');
+    var Imagemin = require('./hcj-config/grunt/lib/imagemin.js');
 
     var task = '';
     //是否单独构建项目
@@ -31,7 +32,7 @@ module.exports = function(grunt) {
     var taskGroup = [];
 
     var uglify = taskGroup.push({name: 'uglify', o: new Uglify(isSingle)});
-    var copy = taskGroup.push({name: 'copy', o: new Copy(isSingle)});
+    // var copy = taskGroup.push({name: 'copy', o: new Copy(isSingle)});
     var less = taskGroup.push({name: 'less', o: new Less(isSingle)});
     var clean = taskGroup.push({name: 'clean', o: new Clean(isSingle)});
     var concat = taskGroup.push({name: 'concat', o: new Concat(isSingle)});
@@ -40,6 +41,7 @@ module.exports = function(grunt) {
     var requirejs = taskGroup.push({name: 'requirejs', o: new Requirejs(isSingle)});
     var filerev = taskGroup.push({name: 'filerev', o: new Filerev(isSingle)});
     var usemin = taskGroup.push({name: 'usemin', o: new Usemin(isSingle)});
+    var imagemin = taskGroup.push({name: 'imagemin', o: new Imagemin(isSingle)});
 
     var projects = util.getProjects();
 
@@ -78,7 +80,7 @@ module.exports = function(grunt) {
         'concat',
         'uglify:build',
         'requirejs',
-        'copy:images',
+        'imagemin',
         'filerev',
         'clean:tmp',
         'usemin'
