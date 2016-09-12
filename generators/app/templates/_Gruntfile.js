@@ -12,6 +12,7 @@ module.exports = function(grunt) {
     var Filerev = require('./hcj-config/grunt/lib/filerev.js');
     var Usemin = require('./hcj-config/grunt/lib/usemin.js');
     var Imagemin = require('./hcj-config/grunt/lib/imagemin.js');
+    // var Manifest = require('./hcj-config/grunt/lib/manifest.js');
 
     var task = '';
     //是否单独构建项目
@@ -42,6 +43,7 @@ module.exports = function(grunt) {
     var filerev = taskGroup.push({name: 'filerev', o: new Filerev(isSingle)});
     var usemin = taskGroup.push({name: 'usemin', o: new Usemin(isSingle)});
     var imagemin = taskGroup.push({name: 'imagemin', o: new Imagemin(isSingle)});
+    // var manifest = taskGroup.push({name: 'manifest', o: new Manifest(isSingle)});
 
     var projects = util.getProjects();
 
@@ -84,6 +86,7 @@ module.exports = function(grunt) {
         'filerev',
         'clean:tmp',
         'usemin'
+        // 'manifest'
     ];
 
     var hasRequireJS = false;
