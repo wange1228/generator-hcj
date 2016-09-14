@@ -1,18 +1,18 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
-    var util = require('./hcj-config/grunt/lib/util.js');
-    var Uglify = require('./hcj-config/grunt/lib/uglify.js');
-    // var Copy = require('./hcj-config/grunt/lib/copy.js');
-    var Less = require('./hcj-config/grunt/lib/less.js');
-    var Clean = require('./hcj-config/grunt/lib/clean.js');
-    var Concat = require('./hcj-config/grunt/lib/concat.js');
-    var Includes = require('./hcj-config/grunt/lib/includes.js');
-    var Htmlmin = require('./hcj-config/grunt/lib/htmlmin.js');
-    var Requirejs = require('./hcj-config/grunt/lib/requirejs.js');
-    var Filerev = require('./hcj-config/grunt/lib/filerev.js');
-    var Usemin = require('./hcj-config/grunt/lib/usemin.js');
-    var Imagemin = require('./hcj-config/grunt/lib/imagemin.js');
-    // var Manifest = require('./hcj-config/grunt/lib/manifest.js');
+    var util = require('./hcj-config/grunt/util.js');
+    var Uglify = require('./hcj-config/grunt/uglify.js');
+    // var Copy = require('./hcj-config/grunt/copy.js');
+    var Less = require('./hcj-config/grunt/less.js');
+    var Clean = require('./hcj-config/grunt/clean.js');
+    var Concat = require('./hcj-config/grunt/concat.js');
+    var Includes = require('./hcj-config/grunt/includes.js');
+    var Htmlmin = require('./hcj-config/grunt/htmlmin.js');
+    var Requirejs = require('./hcj-config/grunt/requirejs.js');
+    var Filerev = require('./hcj-config/grunt/filerev.js');
+    var Usemin = require('./hcj-config/grunt/usemin.js');
+    var Imagemin = require('./hcj-config/grunt/imagemin.js');
+    // var Manifest = require('./hcj-config/grunt/manifest.js');
 
     var task = '';
     //是否单独构建项目
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 
         task = task.split(':');
         //设置项目
-        isSingle = task.length > 2 ? true : false; 
+        isSingle = task.length > 2 ? true : false;
 
     }catch(e){
         throw e;
@@ -99,7 +99,7 @@ module.exports = function(grunt) {
     if(!hasRequireJS){
         buildTasks = util.removeOne(buildTasks, 'requirejs');
     }
-    
+
     grunt.registerTask('build:all', buildTasks);
 
     var isBuildProject = false;
@@ -110,7 +110,7 @@ module.exports = function(grunt) {
         }
     });
     if(isSingle && isBuildProject){
-        grunt.registerTask(_task, buildTasks);    
+        grunt.registerTask(_task, buildTasks);
     }
-    
+
 };
