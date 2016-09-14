@@ -1,17 +1,19 @@
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
-    var util = require('./hcj-config/grunt/lib/util.js');
-    var Uglify = require('./hcj-config/grunt/lib/uglify.js');
-    // var Copy = require('./hcj-config/grunt/lib/copy.js');
-    var Less = require('./hcj-config/grunt/lib/less.js');
-    var Clean = require('./hcj-config/grunt/lib/clean.js');
-    var Concat = require('./hcj-config/grunt/lib/concat.js');
-    var Includes = require('./hcj-config/grunt/lib/includes.js');
-    var Htmlmin = require('./hcj-config/grunt/lib/htmlmin.js');
-    var Requirejs = require('./hcj-config/grunt/lib/requirejs.js');
-    var Filerev = require('./hcj-config/grunt/lib/filerev.js');
-    var Usemin = require('./hcj-config/grunt/lib/usemin.js');
-    var Imagemin = require('./hcj-config/grunt/lib/imagemin.js');
+    var util = require('./hcj-config/grunt/util.js');
+    var Uglify = require('./hcj-config/grunt/uglify.js');
+    var Copy = require('./hcj-config/grunt/copy.js');
+    var Less = require('./hcj-config/grunt/less.js');
+    var Clean = require('./hcj-config/grunt/clean.js');
+    var Concat = require('./hcj-config/grunt/concat.js');
+    var Includes = require('./hcj-config/grunt/includes.js');
+    var Htmlmin = require('./hcj-config/grunt/htmlmin.js');
+    var Requirejs = require('./hcj-config/grunt/requirejs.js');
+    var Filerev = require('./hcj-config/grunt/filerev.js');
+    var Usemin = require('./hcj-config/grunt/usemin.js');
+    var Imagemin = require('./hcj-config/grunt/imagemin.js');
+    var Babel = require('./hcj-config/grunt/babel.js');
+    // var Manifest = require('./hcj-config/grunt/manifest.js');
 
     var task = '';
     //是否单独构建项目
@@ -21,7 +23,7 @@ module.exports = function(grunt) {
 
         task = task.split(':');
         //设置项目
-        isSingle = task.length > 2 ? true : false; 
+        isSingle = task.length > 2 ? true : false;
 
     }catch(e){
         throw e;
@@ -32,7 +34,7 @@ module.exports = function(grunt) {
     var taskGroup = [];
 
     var uglify = taskGroup.push({name: 'uglify', o: new Uglify(isSingle)});
-    // var copy = taskGroup.push({name: 'copy', o: new Copy(isSingle)});
+    var copy = taskGroup.push({name: 'copy', o: new Copy(isSingle)});
     var less = taskGroup.push({name: 'less', o: new Less(isSingle)});
     var clean = taskGroup.push({name: 'clean', o: new Clean(isSingle)});
     var concat = taskGroup.push({name: 'concat', o: new Concat(isSingle)});
@@ -42,6 +44,8 @@ module.exports = function(grunt) {
     var filerev = taskGroup.push({name: 'filerev', o: new Filerev(isSingle)});
     var usemin = taskGroup.push({name: 'usemin', o: new Usemin(isSingle)});
     var imagemin = taskGroup.push({name: 'imagemin', o: new Imagemin(isSingle)});
+    var babel = taskGroup.push({name: 'babel', o: new Babel(isSingle)});
+    // var manifest = taskGroup.push({name: 'manifest', o: new Manifest(isSingle)});
 
     var projects = util.getProjects();
 
@@ -78,12 +82,15 @@ module.exports = function(grunt) {
         'htmlmin',
         'less:build',
         'concat',
+        'copy:js',
+        'babel',
         'uglify:build',
         'requirejs',
         'imagemin',
         'filerev',
         'clean:tmp',
-        'usemin'
+        'usemin',
+        // 'manifest'
     ];
 
     var hasRequireJS = false;
@@ -96,7 +103,7 @@ module.exports = function(grunt) {
     if(!hasRequireJS){
         buildTasks = util.removeOne(buildTasks, 'requirejs');
     }
-    
+
     grunt.registerTask('build:all', buildTasks);
 
     var isBuildProject = false;
@@ -107,7 +114,7 @@ module.exports = function(grunt) {
         }
     });
     if(isSingle && isBuildProject){
-        grunt.registerTask(_task, buildTasks);    
+        grunt.registerTask(_task, buildTasks);
     }
-    
+
 };

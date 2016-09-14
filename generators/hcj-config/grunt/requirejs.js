@@ -14,7 +14,7 @@ class Requirejs{
     }
 
     init(){
-        
+
     }
 
     setProject(path){
@@ -26,11 +26,11 @@ class Requirejs{
         let project = path.project;
         if(page){
             var isMainExist = Fs.existsSync(srcJs + '/main.js');
-            
+
             if(env == 'mobile' && isMainExist){
                 var requirejsOpts = {
-                    baseUrl: srcJs.replace(project + '/' + page, ''),
-                    include: [project + '/' + page + '/main.js'],       
+                    baseUrl: ('.tmpjs/' + path.distJs).replace(project + '/' + page, ''),
+                    include: [project + '/' + page + '/main.js'],
                     out: distJs + '/main.js',
                     optimize: 'uglify',
                     paths: {
@@ -38,7 +38,7 @@ class Requirejs{
                     },
                     stubModules: ['text']
                 };
-                
+
                 this.task.requirejs[project + '-' + page + '-build'] = {
                     options: requirejsOpts
                 };

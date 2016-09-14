@@ -5,7 +5,7 @@ let util = require('./util.js');
 class Uglify{
     constructor(isSingle){
         this.name = 'uglify';
-        
+
         this.isSingle = isSingle;
         this.task = {
             uglify: {
@@ -17,7 +17,7 @@ class Uglify{
                 }
             }
         };
-        
+
         this.init();
     }
 
@@ -77,15 +77,15 @@ class Uglify{
 
     setProject(path){
         let files = this.task.uglify.build.files;
-        
+
         files.push({
             expand: true,
-            cwd: path.srcJs,
+            cwd: '.tmpjs/' + path.distJs,
             src: ['**/*.js'],
             dest: path.distJs,
             ext: '.js'
         });
-        
+
     }
 
 }
