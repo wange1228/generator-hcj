@@ -18,7 +18,21 @@ class Babel{
     }
 
     init(){
+      let me = this;
+      let distJs = util.getDist('mobile').scripts+'/common';
+      let srcJs = util.getSrc('mobile').scripts+'/common';
+      let srcRoot = this.scanFolder(srcJs).files;
+      this.task.babel['common'] = {
+        files: {}
+      };
 
+      srcRoot.map(function(o, i) {
+        let filename = o.replace(new RegExp(srcJs + '\/(.*)', 'g'), '$1');
+        if(/\.js$/.test(filename)){
+            me.task.babel['common'].files['.tmpjs/' + distJs + '/' + filename] = '.tmpjs/' + distJs + '/' + filename;
+        }
+      });
+      console.log(me.task.babel)
     }
 
     setProject(path){
