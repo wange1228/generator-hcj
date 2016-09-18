@@ -25,16 +25,24 @@ module.exports = {
     getDist: function(env){
         return this.conf[env].path.build;
     },
-    // 合并/压缩移动端m.js，请勿颠倒次序！
+    // 合并/压缩移动端m-es6.js，请勿颠倒次序！
     getMobileLib: function(){
-        let srcJs = this.getSrc('mobile').scripts;
-        return [
-            srcJs + '/lib/underscore/underscore.js',
-            srcJs + '/lib/zepto/zepto.js',
-            srcJs + '/lib/template/doT.js',
-            srcJs + '/lib/backbone/backbone.js',
-            srcJs + '/lib/requirejs/require.js'
-        ];
+      return this._getMobileLib();
+    },
+    getMobileES6Lib: function() {
+      return this._getMobileLib().concat([
+        'node_modules/babel-polyfill/dist/polyfill.js'
+      ])
+    },
+    _getMobileLib: function() {
+      let srcJs = this.getSrc('mobile').scripts;
+      return [
+          srcJs + '/lib/underscore/underscore.js',
+          srcJs + '/lib/zepto/zepto.js',
+          srcJs + '/lib/template/doT.js',
+          srcJs + '/lib/backbone/backbone.js',
+          srcJs + '/lib/requirejs/require.js'
+      ];
     },
     removeOne: function(list, val){
         var _list = list.slice();

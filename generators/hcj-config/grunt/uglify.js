@@ -25,6 +25,7 @@ class Uglify{
         let srcJs = util.getSrc('mobile').scripts;
         let distJs = util.getDist('mobile').scripts;
         let libjs = util.getMobileLib();
+        let libes6js = util.getMobileES6Lib();
         let files = this.task.uglify.build.files;
         if(!this.isSingle){
             files = files.concat([
@@ -47,6 +48,10 @@ class Uglify{
                 {
                     src: libjs,
                     dest: distJs + '/lib/m.js'
+                },
+                {
+                    src: libes6js,
+                    dest: distJs + '/lib/m-es6.js'
                 }
             ]);
         }
@@ -68,6 +73,10 @@ class Uglify{
             {
                 src: libjs,
                 dest: '.tmpjs/'+distJs+'/lib/m.js'
+            },
+            {
+                src: libes6js,
+                dest: '.tmpjs/'+distJs+'/lib/m-es6.js'
             }
         ]);
 
