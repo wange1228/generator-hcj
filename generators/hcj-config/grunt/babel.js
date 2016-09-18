@@ -9,7 +9,7 @@ class Babel{
         this.task = {
             babel: {
               options: {
-                presets: ['babel-preset-es2015']
+                presets: ['babel-preset-es2015', 'babel-polyfill']
               }
             }
         };

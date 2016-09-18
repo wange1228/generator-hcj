@@ -17,7 +17,24 @@ class Copy{
     }
 
     init(){
+      let srcJs = util.getSrc('mobile').scripts;
+      let distJs = util.getDist('mobile').scripts;
 
+      //放到临时目录
+      this.task.copy.js.files = this.task.copy.js.files.concat([
+          {
+              expand: true,
+              cwd: srcJs + '/common',
+              src: ['**'],
+              dest: '.tmpjs/'+distJs+'/common'
+          },
+          {
+              expand: true,
+              cwd: srcJs + '/lib',
+              src: ['**'],
+              dest: '.tmpjs/'+distJs+'/lib'
+          }
+      ]);
     }
 
     setProject(path){
