@@ -60,7 +60,7 @@ class Uglify{
         files = files.concat([
             {
                 expand: true,
-                cwd: srcJs + '/common',
+                cwd: '.tmpjs/'+distJs+'/common', //common下需要先进行babel
                 src: ['**/*.js'],
                 dest: '.tmpjs/'+distJs+'/common'
             },
