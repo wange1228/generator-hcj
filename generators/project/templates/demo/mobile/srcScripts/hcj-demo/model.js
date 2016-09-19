@@ -1,5 +1,5 @@
 define(function() {
-
+    'use strict';
     var K = Backbone.Model.extend({
         // query1: function(data){
         //     return $.ajax({
@@ -20,5 +20,5 @@ define(function() {
     });
 
     return K;
-   
+
 });
