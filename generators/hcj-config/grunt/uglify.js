@@ -14,6 +14,12 @@ class Uglify{
                         mangle: true
                     },
                     files: []
+                },
+                common: {
+                  options: {
+                    mangle: true
+                  },
+                  files: []
                 }
             }
         };
@@ -27,6 +33,7 @@ class Uglify{
         let libjs = util.getMobileLib();
         let libes6js = util.getMobileES6Lib();
         let files = this.task.uglify.build.files;
+        let commonFiles = this.task.uglify.common.files;
         if(!this.isSingle){
             files = files.concat([
                 {
@@ -51,18 +58,6 @@ class Uglify{
         //放到临时目录,压缩公用文件
         files = files.concat([
             {
-                expand: true,
-                cwd: '.tmpjs/'+distJs+'/common', //common下需要先进行babel
-                src: ['**/*.js'],
-                dest: '.tmpjs/'+distJs+'/common'
-            },
-            {
-                expand: true,
-                cwd: srcJs + '/lib',
-                src: ['**/*.js'],
-                dest: '.tmpjs/'+distJs+'/lib'
-            },
-            {
                 src: libjs,
                 dest: '.tmpjs/'+distJs+'/lib/m.js'
             },
@@ -80,7 +75,23 @@ class Uglify{
             }
         ]);
 
+        commonFiles = commonFiles.concat([
+            {
+                expand: true,
+                cwd: '.tmpjs/'+distJs+'/common', //common下需要先进行babel
+                src: ['**/*.js'],
+                dest: '.tmpjs/'+distJs+'/common'
+            },
+            {
+                expand: true,
+                cwd: srcJs + '/lib',
+                src: ['**/*.js'],
+                dest: '.tmpjs/'+distJs+'/lib'
+            }
+        ]);
+
         this.task.uglify.build.files = files;
+        this.task.uglify.common.files = commonFiles;
 
     }
 

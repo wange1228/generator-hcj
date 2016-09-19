@@ -86,6 +86,7 @@ module.exports = function(grunt) {
         'babel',
         'uglify:build',
         'requirejs',
+        'uglify:common',
         'imagemin',
         'filerev',
         'clean:tmp',
