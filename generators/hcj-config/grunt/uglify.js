@@ -44,19 +44,11 @@ class Uglify{
                     dest: distJs + '/lib',
                     extDot: 'last',
                     ext: '.js'
-                },
-                {
-                    src: libjs,
-                    dest: distJs + '/lib/m.js'
-                },
-                {
-                    src: libes6js,
-                    dest: distJs + '/lib/m-es6.js'
                 }
             ]);
         }
 
-        //放到临时目录
+        //放到临时目录,压缩公用文件
         files = files.concat([
             {
                 expand: true,
@@ -77,6 +69,14 @@ class Uglify{
             {
                 src: libes6js,
                 dest: '.tmpjs/'+distJs+'/lib/m-es6.js'
+            },
+            {
+                src: libjs,
+                dest: distJs + '/lib/m.js'
+            },
+            {
+                src: libes6js,
+                dest: distJs + '/lib/m-es6.js'
             }
         ]);
 

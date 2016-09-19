@@ -29,10 +29,15 @@ class Babel{
       srcRoot.map(function(o, i) {
         let filename = o.replace(new RegExp(srcJs + '\/(.*)', 'g'), '$1');
         if(/\.js$/.test(filename)){
-            me.task.babel['common'].files['.tmpjs/' + distJs + '/' + filename] = '.tmpjs/' + distJs + '/' + filename;
+          let name = '.tmpjs/' + distJs + '/' + filename;
+          let file = fs.readFileSync(srcJs + '/' + filename, 'utf-8');
+
+          if(/['"]use\sstrict['"]/g.test(file)){
+            me.task.babel['common'].files[name] = name;
+          }
+
         }
       });
-      console.log(me.task.babel)
     }
 
     setProject(path){
@@ -49,7 +54,11 @@ class Babel{
       srcRoot.map(function(o, i) {
         let filename = o.replace(new RegExp(srcJs + '\/(.*)', 'g'), '$1');
         if(/\.js$/.test(filename)){
-            me.task.babel[project + '-' + page].files['.tmpjs/' + distJs + '/' + filename] = '.tmpjs/' + distJs + '/' + filename;
+          let name = '.tmpjs/' + distJs + '/' + filename;
+          let file = fs.readFileSync(srcJs + '/' + filename, 'utf-8');
+          if(/['"]use\sstrict['"]/g.test(file)){
+            me.task.babel[project + '-' + page].files[name] = name;
+          }
         }
       })
     }
