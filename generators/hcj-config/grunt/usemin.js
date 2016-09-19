@@ -23,7 +23,7 @@ class Usemin{
     }
 
     init(){
-        
+
     }
 
     setProject(path, grunt){
@@ -42,7 +42,7 @@ class Usemin{
         var _assetsDirs = useminF.options.assetsDirs;
         var _project = project.replace(/\//g, '\\\/');
         this.grunt = grunt;
-        
+
         _pages.push([new RegExp('\/('+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*)\.css', 'g'), 'replace styles in pages', function(match){
             return me.getVersionFile(distCss, project, page, match, '.css');
         }]);
@@ -63,19 +63,19 @@ class Usemin{
     getVersionFile(distRoot, project, page, match, ext){
         let grunt = this.grunt;
         let base = distRoot.replace(page ? (project + '/' + page) : project, '');
-                
+
         let summary = {};
-        
+
         for (let i in grunt.filerev.summary) {
 
             let key = i.replace(/\\/g, '/');
-            
+
             let val = grunt.filerev.summary[i].replace(/\\/g, '/');
-            
+
             if(key.indexOf(ext) !== -1){
                 summary[key] = val;
             }
-            
+
         }
         let result;
         let root;
@@ -87,7 +87,7 @@ class Usemin{
         let mapFile = summary[
             root + match + ext
         ];
-        
+
         if(mapFile){
             result = mapFile.replace(base, '').replace(ext, '');
         }else{

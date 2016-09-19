@@ -28,7 +28,7 @@ class Babel{
 
       srcRoot.map(function(o, i) {
         let filename = o.replace(new RegExp(srcJs + '\/(.*)', 'g'), '$1');
-        if(/\.js$/.test(filename)){
+        if(/\.js$/.test(filename) && filename.indexOf('fastclick.js') === -1){
           let name = '.tmpjs/' + distJs + '/' + filename;
           let file = fs.readFileSync(srcJs + '/' + filename, 'utf-8');
 
