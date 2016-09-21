@@ -38,7 +38,7 @@ class Uglify{
             files = files.concat([
                 {
                     expand: true,
-                    cwd: srcJs + '/common',
+                    cwd: '.tmpjs/'+distJs+'/common', //common下需要先进行babel
                     src: ['**/*.js'],
                     dest: distJs + '/common',
                     extDot: 'last',
@@ -75,6 +75,7 @@ class Uglify{
             }
         ]);
 
+        //压缩后的.tmpjs 用来加版本号
         commonFiles = commonFiles.concat([
             {
                 expand: true,
