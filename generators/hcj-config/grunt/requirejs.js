@@ -28,22 +28,26 @@ class Requirejs{
             var isMainExist = Fs.existsSync(srcJs + '/main.js');
 
             if(env == 'mobile' && isMainExist){
-                var requirejsOpts = {
-                    baseUrl: ('.tmpjs/' + path.distJs).replace(project + '/' + page, ''),
-                    include: [project + '/' + page + '/main.js'],
-                    out: distJs + '/main.js',
-                    optimize: 'uglify',
-                    paths: {
-                        'text': 'lib/requirejs/text'
-                    },
-                    stubModules: ['text']
-                };
+                var buildOpts = this.getOptions(project, page, '.tmpjs/' + distJs, srcJs, 'none');
 
                 this.task.requirejs[project + '-' + page + '-build'] = {
-                    options: requirejsOpts
+                    options: buildOpts
                 };
             }
         }
+    }
+
+    getOptions(project, page, distJs, baseUrl, optimize){
+      return {
+          baseUrl: baseUrl.replace(project + '/' + page, ''),
+          include: [project + '/' + page + '/main.js'],
+          out: distJs + '/main.js',
+          optimize: optimize,
+          paths: {
+              'text': 'lib/requirejs/text'
+          },
+          stubModules: ['text']
+      };
     }
 
     hasRequirejs(){
