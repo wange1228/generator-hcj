@@ -41,6 +41,10 @@ module.exports = yeoman.Base.extend({
                         value: 'finance'
                     },
                     {
+                        name: '保险',
+                        value: 'insurance'
+                    },
+                    {
                         name: '活动',
                         value: 'activities'
                     }
@@ -87,7 +91,7 @@ module.exports = yeoman.Base.extend({
                 }
             }
             this.staticSvrHost = cfg.basic[this.projectType].host.statics;
-            this.pathName = this.gitName == 'finance' ? '/mobile' : '';
+            this.pathName = this.gitName == 'activities' ? '' : '/mobile';
             done();
         }.bind(this));
     },
@@ -106,7 +110,7 @@ module.exports = yeoman.Base.extend({
         var pageName = projectName + ':' + me.pageName;
         var data = JSON.parse(me.projectData);
         var pageExt = me.projectType == 'mobile' ? '.html' : '.ftl';
-        
+
         if(data.indexOf(pageName) !== -1){
             me.log(chalk.red(me.projectType + '/' + me.projectName + '/' + me.pageName + '页面已经创建，请勿重复创建!'));
         }else{
@@ -124,13 +128,12 @@ module.exports = yeoman.Base.extend({
                 me.directory(path.join(from, 'srcStyles/hcj-demo'), path.join(to['styles'], me.projectName, me.pageName));
                 me.directory(path.join(from, 'srcScripts/hcj-demo'), path.join(to['scripts'], me.projectName, me.pageName));
                 me.directory(path.join(from, 'srcImages/hcj-demo'), path.join(to['images'], me.projectName));
-                
-                
+
+
                 me.log(chalk.green('=== 创建完成 ==='));
                 done();
             });
-            
+
         }
     }
 });
-
