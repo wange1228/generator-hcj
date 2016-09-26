@@ -32,14 +32,15 @@ class Copy{
     }
 
     setProject(path){
-      // let srcJs = path.srcJs;
-      // let distJs = path.distJs;
-      // this.task.copy.js.files.push({
-      //     expand: true,
-      //     cwd: srcJs,
-      //     src: '**',
-      //     dest: '.tmpjs/'+distJs
-      // });
+      //pdf
+      let srcImg = path.srcImg;
+      let distImg = path.distImg;
+      this.task.copy.js.files.push({
+          expand: true,
+          cwd: srcImg,
+          src: '**/*.pdf',
+          dest: distImg
+      });
     }
 
 }
