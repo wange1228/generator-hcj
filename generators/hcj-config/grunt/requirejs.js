@@ -2,6 +2,11 @@
 
 let util = require('./util.js');
 let Fs = require('fs');
+let path = require('path');
+let currentPath = process.cwd();
+let hockPath = path.join(currentPath, '.hock');
+let hockJSON = Fs.readFileSync(hockPath, 'utf-8');
+hockJSON = JSON.parse(hockJSON);
 
 class Requirejs{
     constructor(isSingle){
@@ -44,7 +49,8 @@ class Requirejs{
           out: distJs + '/main.js',
           optimize: optimize,
           paths: {
-              'text': 'lib/requirejs/text'
+              'text': 'lib/requirejs/text',
+              'component': path.join(hockJSON.component, 'mobile/scripts/common/modules')
           },
           stubModules: ['text']
       };
