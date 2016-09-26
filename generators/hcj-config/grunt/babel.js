@@ -9,7 +9,8 @@ class Babel{
         this.task = {
             babel: {
               options: {
-                presets: ['babel-preset-es2015', 'babel-polyfill']
+                presets: ['babel-preset-es2015', 'babel-polyfill'],
+                compact: false
               }
             }
         };
@@ -18,26 +19,26 @@ class Babel{
     }
 
     init(){
-      // let me = this;
-      // let distJs = util.getDist('mobile').scripts+'/common';
-      // let srcJs = util.getSrc('mobile').scripts+'/common';
-      // let srcRoot = this.scanFolder(srcJs).files;
-      // this.task.babel['common'] = {
-      //   files: {}
-      // };
-      //
-      // srcRoot.map(function(o, i) {
-      //   let filename = o.replace(new RegExp(srcJs + '\/(.*)', 'g'), '$1');
-      //   if(/\.js$/.test(filename) && filename.indexOf('fastclick.js') === -1){
-      //     let name = '.tmpjs/' + distJs + '/' + filename;
-      //     let file = fs.readFileSync(srcJs + '/' + filename, 'utf-8');
-      //
-      //     if(/['"]use\sstrict['"]/g.test(file)){
-      //       me.task.babel['common'].files[name] = name;
-      //     }
-      //
-      //   }
-      // });
+      let me = this;
+      let distJs = util.getDist('mobile').scripts+'/common';
+      let srcJs = util.getSrc('mobile').scripts+'/common';
+      let srcRoot = this.scanFolder(srcJs).files;
+      this.task.babel['common'] = {
+        files: {}
+      };
+
+      srcRoot.map(function(o, i) {
+        let filename = o.replace(new RegExp(srcJs + '\/(.*)', 'g'), '$1');
+        if(/\.js$/.test(filename) && filename.indexOf('fastclick.js') === -1){
+          let name = '.tmpjs/' + distJs + '/' + filename;
+          let file = fs.readFileSync(srcJs + '/' + filename, 'utf-8');
+
+          if(/['"]use\sstrict['"]/g.test(file)){
+            me.task.babel['common'].files[name] = name;
+          }
+
+        }
+      });
     }
 
     setProject(path){
