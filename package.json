@@ -1,6 +1,6 @@
 {
   "name": "generator-hcj",
-  "version": "1.2.1",
+  "version": "1.2.5",
   "description": "HTML/CSS/JavaScript前端开发工作流，适用于互联网金融事业部开发环境",
   "license": "MIT",
   "author": {
@@ -25,15 +25,15 @@
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.13.2",
-    "babelify": "^7.3.0",
-    "optimist": "^0.6.1"
+    "babelify": "^7.3.0"
   },
   "dependencies": {
     "chalk": "~0.4.0",
     "yeoman-generator": "~0.16.0",
     "yosay": "^1.1.1",
     "lodash": "~4.13.1",
-    "path": "~0.12.7"
+    "path": "~0.12.7",
+    "optimist": "^0.6.1"
   },
   "browserify": {
     "transform": [
