@@ -2,11 +2,18 @@
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var fs = require('fs');
+var Optimist = require('optimist');
 
 var generators = yeoman.generators;
 
 var HCJGenerator = generators.Base.extend({
     initializing: function() {
+      	var cmd = Optimist.usage('').argv;
+        if (cmd.version || cmd.v) {
+      		var packageInfo = JSON.parse(fs.readFileSync(__dirname + '/../../package.json', 'utf-8'));
+      		console.log(packageInfo.version);
+      		process.exit();
+      	}
         this._installSSL();
     },
     /**
@@ -21,8 +28,8 @@ var HCJGenerator = generators.Base.extend({
                 me.directory('_ssl', 'ssl');
             }
             done();
-            
-        });        
+
+        });
     },
     /**
      * [复制配置文件]
@@ -41,7 +48,7 @@ var HCJGenerator = generators.Base.extend({
             callback: function () {
                 // this.spawnCommand('grunt', ['dev']);
                 me.log(chalk.green('=== 安装完成 ==='));
-                
+
             }.bind(this)
         });
     }
