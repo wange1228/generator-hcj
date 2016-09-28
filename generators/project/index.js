@@ -9,7 +9,6 @@ var currentPath = process.cwd();
 var cfgPath = path.join(currentPath, 'hcj-config/basic-conf.js');
 var cfg = require(cfgPath);
 
-console.log(cfgPath)
 module.exports = yeoman.Base.extend({
     initializing: function() {
         var me = this;

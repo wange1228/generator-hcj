@@ -64,7 +64,7 @@ class Filerev{
                 src: ['**/*.js'],
                 dest: distJs
             }
-            
+
         ]);
 
         //防止图片多次加版本
@@ -73,7 +73,7 @@ class Filerev{
             files.push({
                 expand: true,
                 cwd: distImg,
-                src: ['**/*.{png,jpg,gif,webp}'],
+                src: ['**/*.{png,jpg,gif,webp,pdf}'],
                 dest: distImg
             });
         }
