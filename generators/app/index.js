@@ -75,7 +75,6 @@ var HCJGenerator = generators.Base.extend({
         o = path.join(root, o);
         return o;
       });
-      console.log(less);
       return less;
     },
     /**
@@ -95,7 +94,7 @@ var HCJGenerator = generators.Base.extend({
             callback: function () {
                 // this.spawnCommand('grunt', ['dev']);
                 me.log(chalk.green('=== 安装完成 ==='));
-                
+
             }.bind(this)
         });
     }
