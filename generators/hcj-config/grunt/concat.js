@@ -18,7 +18,7 @@ class Concat{
         let libjs = util.getMobileLib();
         let srcJs = util.getSrc('mobile').scripts;
         let libes6js = util.getMobileES6Lib();
-        let footer = '\nrequirejs.config({paths:{"text": "lib/requirejs/text"}})';
+        let footer = '\nrequirejs.config({paths:{"text": "lib/requirejs/text", "component": "//component.vipstatic.com/mobile/scripts/common/modules"}})';
         this.task.concat.mobileLib = {
             src: libjs,
             dest: srcJs + '/lib/m.js',

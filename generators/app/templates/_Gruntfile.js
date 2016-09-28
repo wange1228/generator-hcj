@@ -1,5 +1,12 @@
+var Optimist = require('optimist');
+
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
+    var cmd = Optimist.usage('').argv;
+    var isComponent = false; //是否打包组件
+    if (cmd.component) {
+      isComponent = true;
+    };
     var util = require('./hcj-config/grunt/util.js');
     var Uglify = require('./hcj-config/grunt/uglify.js');
     var Copy = require('./hcj-config/grunt/copy.js');
@@ -13,6 +20,7 @@ module.exports = function(grunt) {
     var Usemin = require('./hcj-config/grunt/usemin.js');
     var Imagemin = require('./hcj-config/grunt/imagemin.js');
     var Babel = require('./hcj-config/grunt/babel.js');
+    var GitContrast = require('./hcj-config/grunt/gitcontrast.js');
     // var Manifest = require('./hcj-config/grunt/manifest.js');
 
     var task = '';
@@ -33,18 +41,19 @@ module.exports = function(grunt) {
 
     var taskGroup = [];
 
-    var uglify = taskGroup.push({name: 'uglify', o: new Uglify(isSingle)});
-    var copy = taskGroup.push({name: 'copy', o: new Copy(isSingle)});
-    var less = taskGroup.push({name: 'less', o: new Less(isSingle)});
-    var clean = taskGroup.push({name: 'clean', o: new Clean(isSingle)});
-    var concat = taskGroup.push({name: 'concat', o: new Concat(isSingle)});
-    var includes = taskGroup.push({name: 'includes', o: new Includes(isSingle)});
-    var htmlmin = taskGroup.push({name: 'htmlmin', o: new Htmlmin(isSingle)});
-    var requirejs = taskGroup.push({name: 'requirejs', o: new Requirejs(isSingle)});
-    var filerev = taskGroup.push({name: 'filerev', o: new Filerev(isSingle)});
-    var usemin = taskGroup.push({name: 'usemin', o: new Usemin(isSingle)});
-    var imagemin = taskGroup.push({name: 'imagemin', o: new Imagemin(isSingle)});
-    var babel = taskGroup.push({name: 'babel', o: new Babel(isSingle)});
+    taskGroup.push({name: 'uglify', o: new Uglify(isSingle)});
+    taskGroup.push({name: 'copy', o: new Copy(isSingle)});
+    taskGroup.push({name: 'less', o: new Less(isSingle)});
+    taskGroup.push({name: 'clean', o: new Clean(isSingle)});
+    taskGroup.push({name: 'concat', o: new Concat(isSingle)});
+    taskGroup.push({name: 'includes', o: new Includes(isSingle)});
+    taskGroup.push({name: 'htmlmin', o: new Htmlmin(isSingle)});
+    taskGroup.push({name: 'requirejs', o: new Requirejs(isSingle)});
+    taskGroup.push({name: 'filerev', o: new Filerev(isSingle)});
+    taskGroup.push({name: 'usemin', o: new Usemin(isSingle)});
+    taskGroup.push({name: 'imagemin', o: new Imagemin(isSingle)});
+    taskGroup.push({name: 'babel', o: new Babel(isSingle)});
+    taskGroup.push({name: 'gitcontrast', o: new GitContrast(isSingle)});
     // var manifest = taskGroup.push({name: 'manifest', o: new Manifest(isSingle)});
 
     var projects = util.getProjects();
@@ -77,23 +86,25 @@ module.exports = function(grunt) {
     init();
 
     var buildTasks = [
-        'clean',
-        'includes',
-        'htmlmin',
-        'less:build',
-        'concat',
-        'copy:js',
-        'requirejs',
-        'babel',
-        'uglify:build',
-        'uglify:common',
-        'imagemin',
-        'filerev',
-        'clean:tmp',
-        'usemin',
+        'clean', //清除hcj build的目录
+        'includes', //html includes
+        'htmlmin',  //html 压缩
+        'less:build', //样式编译
+        'concat', //合并公用js
+        'copy:js', //复制js到临时目录
+        'requirejs',  //主文件通过r.js编译
+        'babel',  //加上'use strict'的js文件进行babel
+        'uglify:build', //压缩项目js
+        'uglify:common', //压缩公用js
+        'imagemin', //图片压缩
+        'filerev', //生成文件版本
+        'clean:tmp',  //清除临时目录
+        'usemin', //html,css内静态地址加上版本号
         // 'manifest'
     ];
-
+    if(isComponent){
+        buildTasks.unshift('gitcontrast') //当前git分支与component分支比对，分支名需要一致
+    }
     var hasRequireJS = false;
     taskGroup.forEach(function(o, i){
         if(o.name == 'requirejs'){
