@@ -97,9 +97,12 @@ module.exports = function(grunt) {
         'uglify:build', //压缩项目js
         'uglify:common', //压缩公用js
         'imagemin', //图片压缩
-        'filerev', //生成文件版本
+        'filerev:images', //生成图片版本
+        'usemin:images', //压缩完的css中加上图片版本号
+        'filerev:build', //生成文件版本
+        'usemin:pages', //html,css内静态地址加上版本号
+        'usemin:styles', //html,css内静态地址加上版本号
         'clean:tmp',  //清除临时目录
-        'usemin', //html,css内静态地址加上版本号
         // 'manifest'
     ];
     if(isComponent){
