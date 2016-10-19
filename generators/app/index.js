@@ -48,34 +48,65 @@ var HCJGenerator = generators.Base.extend({
       this._installLess(root, 'desktop');
     },
     _installLess: function(root, type) {
-      var less = this._getLess(root, type);
-      var to = path.join(currentPath, cfg[type].path.src.styles);
-      to = path.join(to, 'g-component.less');
-      less = this._getImportString(less);
-      fs.writeFile(to, less, function(err) {
-        if(!err){
-          console.log(to + '创建完成!');
-        }
-      })
+        var to = path.join(currentPath, cfg[type].path.src.styles);
+        var less = this._getLess(root, to, type);
+        to = path.join(to, 'g-component.less');
+        less = this._getImportString(less);
+        fs.writeFile(to, less, function(err) {
+            if(!err){
+                console.log(to + '创建完成!');
+            }
+        })
     },
     _getImportString: function(less) {
       var result = '';
       less.forEach(function(o, i) {
-        result += '@import "' + o.replace(/\\/g, '/') + '"' + ';\n';
+        result += '@import "' + o + '"' + ';\n';
         });
       return result;
     },
-    _getLess: function(root, type) {
-      var less = fs.readFileSync(path.join(
-        root,
-        type + '/component-less.js'
-      ), 'utf-8');
-      less = JSON.parse(less);
-      less = less.map(function(o, i) {
-        o = path.join(root, o);
-        return o;
-      });
-      return less;
+    _getBaseRoot: function(path) {
+        return path.slice(0, 2).toLowerCase();
+    },
+    _getSameStartStr: function(str1, str2) {
+        var tmp = [];
+        var arr1 = str1.split('/');
+        var arr2 = str2.split('/');
+        for (var i = 0; i < arr1.length; i++) {
+            if(arr1[i] == arr2[i]){
+                tmp.push(arr1[i]);
+            }else{
+                break;
+            }
+        }
+        return tmp.join('/') + '/';
+    },
+    _getLess: function(root, to, type) {
+        var me = this;
+        var less = fs.readFileSync(path.join(
+            root,
+            type + '/component-less.js'
+        ), 'utf-8');
+        to = to.replace(/\\/g, '/');
+        less = JSON.parse(less);
+        less = less.map(function(o, i) {
+            o = path.join(root, o);
+            o = o.replace(/\\/g, '/');
+            //同一目录
+            if(me._getBaseRoot(o) == me._getBaseRoot(to)){
+                var sameStr = me._getSameStartStr(o, to);
+                var str = to.slice(sameStr.length);
+                var arr = str.split('/');
+                var result = '';
+                for (var i = 0; i < arr.length; i++) {
+                    result += '../';
+                }
+                return result + o.slice(sameStr.length);
+            }
+
+            return o;
+        });
+        return less;
     },
     /**
      * [复制配置文件]
