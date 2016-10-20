@@ -12,11 +12,13 @@ class Usemin{
                     assetsDirs: [],
                     patterns: {
                         pages: [],
-                        styles: []
+                        styles: [],
+                        images: []
                     }
                 },
                 pages: [],
-                styles: []
+                styles: [],
+                images: []
             }
         };
         this.init();
@@ -38,6 +40,7 @@ class Usemin{
         let htmlExt = path.env == 'desktop' ? '.ftl' : '.html';
         useminF.pages.push(distPage + '/**'+htmlExt);
         useminF.styles.push(distCss + '/**.css');
+        useminF.images.push(distCss + '/**.css');
         var _pages = useminF.options.patterns.pages;
         var _assetsDirs = useminF.options.assetsDirs;
         var _project = project.replace(/\//g, '\\\/');
@@ -46,7 +49,7 @@ class Usemin{
         _pages.push([new RegExp('\/('+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*)\.css', 'g'), 'replace styles in pages', function(match){
             return me.getVersionFile(distCss, project, page, match, '.css');
         }]);
-        _pages.push([new RegExp('(\/'+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp|pdf))', 'g'), 'replace images in pages']);
+        _pages.push([new RegExp('(\/'+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in pages']);
         _pages.push([new RegExp('[\'\"][^\'\"]*(('+_project+'|lib|common)\/[^\'\"]*\)\.js[\'\"]', 'g'), 'replace scripts in pages', function(match){
             return me.getVersionFile(distJs, project, page, match, '.js');
         }]);
@@ -54,6 +57,8 @@ class Usemin{
             return me.getVersionFile(distJs, project, page, match, '.js');
         }]);
         useminF.options.patterns.styles.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']);
+        //样式中的图片先加版本号
+        useminF.options.patterns.images.push([new RegExp('(\/'+project+'\/[a-zA-Z0-9\-_]*\.(jpg|png|gif|webp))', 'g'), 'replace images in styles']);
         _assetsDirs.push(distJs.replace(project, ''));
         _assetsDirs.push(distCss.replace(project, ''));
         _assetsDirs.push(distImg.replace(project, ''));

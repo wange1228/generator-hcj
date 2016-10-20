@@ -13,6 +13,9 @@ class Filerev{
                     algorithm: 'md5',
                     length: 7
                 },
+                images: {
+                    files: []
+                },
                 build: {
                     files: []
                 }
@@ -51,6 +54,8 @@ class Filerev{
         let distJs = path.distJs;
         let distImg = path.distImg;
         let files = this.task.filerev.build.files;
+        let imageFiles = this.task.filerev.images.files;
+
         files = files.concat([
             {
                 expand: true,
@@ -70,14 +75,17 @@ class Filerev{
         //防止图片多次加版本
         if(this.cache.indexOf(distImg) === -1){
             this.cache.push(distImg);
-            files.push({
+            //图片单独加版本
+            imageFiles.push({
                 expand: true,
                 cwd: distImg,
-                src: ['**/*.{png,jpg,gif,webp,pdf}'],
+                src: ['**/*.{png,jpg,gif,webp}'],
                 dest: distImg
             });
         }
+
         this.task.filerev.build.files = files;
+        this.task.filerev.images.files = imageFiles;
     }
 
 }

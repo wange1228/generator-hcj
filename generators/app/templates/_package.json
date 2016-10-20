@@ -22,7 +22,7 @@
     "babel-preset-es2015": "^6.0.11",
     "babel-polyfill": "^6.13.0",
     "grunt-babel": "^6.0.0",
-    "grunt-git-contrast": "^1.0.2",
+    "grunt-git-contrast": "^1.0.4",
     "load-grunt-tasks": "^3.5.0",
     "optimist": "^0.6.1"
   }
