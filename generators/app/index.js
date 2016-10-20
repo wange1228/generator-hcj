@@ -92,8 +92,8 @@ var HCJGenerator = generators.Base.extend({
         less = less.map(function(o, i) {
             o = path.join(root, o);
             o = o.replace(/\\/g, '/');
-            //同一目录
-            if(me._getBaseRoot(o) == me._getBaseRoot(to)){
+            //mac
+            if(o.startsWith('/')){
                 var sameStr = me._getSameStartStr(o, to);
                 var str = to.slice(sameStr.length);
                 var arr = str.split('/');
