@@ -50,7 +50,8 @@ class Requirejs{
           optimize: optimize,
           paths: {
               'text': 'lib/requirejs/text',
-              'component': path.join(hockJSON.component, 'mobile/scripts/common/modules')
+              'component': path.join(hockJSON.component, 'mobile/scripts/common/modules'),
+              'globaljs': path.join(hockJSON.component, 'mobile/scripts')
           },
           stubModules: ['text']
       };
