@@ -26,12 +26,15 @@ class Includes{
         let includeFSrc = page ? (page + htmlExt) : ('**/*'+htmlExt); //如shanghaibank, activity都只放了目录
 
         let srcPage = path.srcPage;
+        let distPage = path.distPage;
         let needIncludes = true;
         //支持多级目录创建的文件包含其它html
         if(page){
           let folderSeperatorIndex = page.lastIndexOf('/');
           if(folderSeperatorIndex !== -1){
-            srcPage = srcPage + '/' + page.slice(0, folderSeperatorIndex);
+            let folder = page.slice(0, folderSeperatorIndex);
+            srcPage = srcPage + '/' + folder;
+            distPage = distPage + '/' + folder;
             includeFSrc = page.slice(folderSeperatorIndex + 1) + htmlExt;
           }
         }else{
@@ -51,7 +54,7 @@ class Includes{
                   expand: true,
                   cwd: srcPage,
                   src: [includeFSrc],
-                  dest: path.distPage,
+                  dest: distPage,
                   ext: htmlExt
               }]
           };
