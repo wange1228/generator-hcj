@@ -15,7 +15,7 @@ class Includes{
     }
 
     init(){
-        
+
     }
 
     setProject(path){
@@ -24,19 +24,29 @@ class Includes{
         let includeFProp = page ? project + '/' + page : project;
         let htmlExt = path.env == 'desktop' ? '.ftl' : '.html';
         let includeFSrc = page ? (page + htmlExt) : ('**/*'+htmlExt);
+
+        let srcPage = path.srcPage;
+        //支持多级目录创建的文件包含其它html
+        if(page){
+          let folderSeperatorIndex = page.lastIndexOf('/');
+          if(folderSeperatorIndex !== -1){
+            srcPage = srcPage + '/' + page.slice(0, folderSeperatorIndex);
+            includeFSrc = page.slice(folderSeperatorIndex + 1) + htmlExt;
+          }
+        }
         this.task.includes[includeFProp] = {
             options: {
-                includePath: path.srcPage
+                includePath: srcPage
             },
             files: [{
                 expand: true,
-                cwd: path.srcPage,
+                cwd: srcPage,
                 src: [includeFSrc],
                 dest: path.distPage,
                 ext: htmlExt
             }]
         };
-        
+
     }
 
 }
