@@ -3,9 +3,9 @@ var Optimist = require('optimist');
 module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
     var cmd = Optimist.usage('').argv;
-    var isComponent = false; //是否打包组件
-    if (cmd.component) {
-      isComponent = true;
+    var nocheck = false; //是否不打包组件
+    if (cmd.nocheck) {
+      nocheck = true;
     };
     var util = require('./hcj-config/grunt/util.js');
     var Uglify = require('./hcj-config/grunt/uglify.js');
@@ -105,9 +105,11 @@ module.exports = function(grunt) {
         'clean:tmp',  //清除临时目录
         // 'manifest'
     ];
-    if(isComponent){
+
+    if(!nocheck){
         buildTasks.unshift('gitcontrast') //当前git分支与component分支比对，分支名需要一致
     }
+
     var hasRequireJS = false;
     taskGroup.forEach(function(o, i){
         if(o.name == 'requirejs'){

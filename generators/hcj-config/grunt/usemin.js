@@ -44,6 +44,7 @@ class Usemin{
         var _pages = useminF.options.patterns.pages;
         var _assetsDirs = useminF.options.assetsDirs;
         var _project = project.replace(/\//g, '\\\/');
+
         this.grunt = grunt;
 
         _pages.push([new RegExp('\/('+_project+'(\/[^\/]+)*\/[a-zA-Z0-9\-_]*)\.css', 'g'), 'replace styles in pages', function(match){
@@ -53,6 +54,12 @@ class Usemin{
         _pages.push([new RegExp('[\'\"][^\'\"]*(('+_project+'|lib|common)\/[^\'\"]*\)\.js[\'\"]', 'g'), 'replace scripts in pages', function(match){
             return me.getVersionFile(distJs, project, page, match, '.js');
         }]);
+        if(page){
+            let _page = page.replace(/\//g, '\\\/');
+            _pages.push([new RegExp('[\'\"][^\'\"]*('+_project+'\/' + _page + '\/[^\'\"]*\)\.js[\'\"]', 'g'), 'replace project scripts in pages', function(match){
+                return me.getVersionFile(distJs, project, page, match, '.js');
+            }]);
+        }
         _pages.push([new RegExp(': *[\'\"](('+_project+'|lib|common)\/.*\)[\'\"]', 'g'), 'replace require config in pages', function(match) {
             return me.getVersionFile(distJs, project, page, match, '.js');
         }]);
